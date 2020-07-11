@@ -2,9 +2,9 @@
 {
     public class BaseProduct
     {
-        public int StockProductID { get; set; }
+        public int ProductID { get; set; }
         public int Quantity { get; set; }
 
-        public virtual StockProduct StockProduct { get; set; }
+        public virtual Product Product { get; set; }
     }
 }

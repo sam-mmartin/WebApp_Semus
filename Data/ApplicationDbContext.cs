@@ -24,7 +24,14 @@ namespace WebApp_Semus.Data
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
+            builder.ApplyConfiguration(new ProductConfig());
             builder.ApplyConfiguration(new StockConfig());
+            builder.ApplyConfiguration(new StockProductConfig());
+
+            builder.ApplyConfiguration(new StockOrderConfig());
+            builder.ApplyConfiguration(new ProductOrderConfig());
+            builder.ApplyConfiguration(new PurchaseOrderConfig());
+            builder.ApplyConfiguration(new ProductPurchaseOrderConfig());
 
             base.OnModelCreating(builder);
         }
