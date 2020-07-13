@@ -10,8 +10,10 @@ using WebApp_Semus.Models.Stock.Product;
 
 namespace WebApp_Semus.Controllers
 {
+    [Authorize(Policy = "Admin")]
     public class StockController : Controller
     {
+        #region Var & Constructor
         private readonly ApplicationDbContext _dbContext;
         private readonly UserManager<IdentityUser> _userManager;
 
@@ -20,19 +22,21 @@ namespace WebApp_Semus.Controllers
             _dbContext = dbContext;
             _userManager = userManager;
         }
+        #endregion
 
+        #region Get Methods
         public async Task<IActionResult> Index()
         {
             return View(await _dbContext.Stocks.ToListAsync());
         }
 
-        [Authorize]
         public IActionResult Create()
         {
             return View();
         }
+        #endregion
 
-        [Authorize]
+        #region Post Methods
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(StockViewModel model)
@@ -56,5 +60,6 @@ namespace WebApp_Semus.Controllers
 
             return View(model);
         }
+        #endregion
     }
 }

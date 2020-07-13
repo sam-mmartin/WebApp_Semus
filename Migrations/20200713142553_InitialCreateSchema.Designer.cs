@@ -10,7 +10,7 @@ using WebApp_Semus.Data;
 namespace WebApp_Semus.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20200711132154_InitialCreateSchema")]
+    [Migration("20200713142553_InitialCreateSchema")]
     partial class InitialCreateSchema
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

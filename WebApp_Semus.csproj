@@ -6,6 +6,27 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Include="wwwroot\Images\Backgrounds\health-background.jpg" />
+    <None Include="wwwroot\Images\Beagle\avatar2.png" />
+    <None Include="wwwroot\Images\Beagle\avatar3.png" />
+    <None Include="wwwroot\Images\Beagle\avatar4.png" />
+    <None Include="wwwroot\Images\Beagle\avatar5.png" />
+    <None Include="wwwroot\Images\Beagle\bitbucket.png" />
+    <None Include="wwwroot\Images\Beagle\dribbble.png" />
+    <None Include="wwwroot\Images\Beagle\dropbox.png" />
+    <None Include="wwwroot\Images\Beagle\github.png" />
+    <None Include="wwwroot\Images\Beagle\mail_chimp.png" />
+    <None Include="wwwroot\Images\Beagle\slack.png" />
+    <None Include="wwwroot\Images\doctor.png" />
+    <None Include="wwwroot\Images\Inventory.png" />
+    <None Include="wwwroot\Images\logo.png" />
+    <None Include="wwwroot\Images\Medicamento.png" />
+    <None Include="wwwroot\Images\stock.png" />
+    <None Include="wwwroot\Images\Trash-Full-icon.png" />
+    <None Include="wwwroot\Images\user.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="3.1.5" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.5" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="3.1.5" />

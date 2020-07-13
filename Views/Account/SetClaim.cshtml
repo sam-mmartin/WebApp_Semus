@@ -1,0 +1,46 @@
+﻿@model WebApp_Semus.Entities.User
+
+@{
+    ViewData["Title"] = "SetClaim";
+    Layout = "~/Views/Shared/Stock/_LayoutStock.cshtml";
+}
+
+<main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
+    <h1>Autorização</h1>
+
+    <h4>Definir níveis de autorização</h4>
+    <hr />
+    <div class="row">
+        <div class="col-md-4">
+            <form asp-action="SetClaim">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input asp-for="ID" hidden />
+
+                <div class="form-group">
+                    <label asp-for="Email" class="control-label"></label>
+                    <input asp-for="Email" class="form-control" />
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label>Nível de Acesso</label>
+                    <select asp-for="Claim.Type" asp-items="@ViewBag.ListClaims" class="form-control"></select>
+                </div>
+
+                <div class="form-group">
+                    <label>Autorização</label>
+                    <select asp-for="Claim.Value" class="form-control">
+                        <option value="false">False</option>
+                        <option value="true">True</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <a asp-action="Index" class="btn btn-secondary">Voltar</a>
+                    <input type="submit" value="Definir" class="btn btn-primary" />
+                </div>
+            </form>
+        </div>
+    </div>
+</main>
+
