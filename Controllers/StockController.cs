@@ -3,9 +3,11 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using WebApp_Semus.Data;
 using WebApp_Semus.Entities.Stock;
+using WebApp_Semus.Models;
 using WebApp_Semus.Models.Stock.Product;
 
 namespace WebApp_Semus.Controllers
@@ -30,13 +32,46 @@ namespace WebApp_Semus.Controllers
             return View(await _dbContext.Stocks.ToListAsync());
         }
 
+        [Authorize(Policy = "SuperAdmin")]
         public IActionResult Create()
         {
             return View();
         }
+
+        public async Task<IActionResult> Details(int? id)
+        {
+            if (id == null)
+            {
+                TempData["Message"] = "Estoque não encontrado. Registro apagado por outro usuário.";
+                return RedirectToAction("Index");
+            }
+
+            var stock = await _dbContext.Stocks
+                .Where(s => s.ID == id)
+                .Include(i => i.StockOrders)
+                .Include(i => i.StockProducts)
+                .SingleOrDefaultAsync();
+
+            if (stock.ID == 1)
+            {
+                ViewBag.Orders = new OrdersBagViewModel()
+                {
+                    CountProduct = await _dbContext.StockOrders.Where(p => p.Type == 1 && p.Invoice == false).CountAsync(),
+                    CountSuply = await _dbContext.StockOrders.Where(p => p.Type == 2 && p.Invoice == false).CountAsync()
+                };
+            }
+
+            ViewBag.Stock = new StockBagViewModel()
+            {
+                ID = stock.ID,
+                Description = stock.Description
+            };
+            return View(stock);
+        }
         #endregion
 
         #region Post Methods
+        [Authorize(Policy = "SuperAdmin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(StockViewModel model)

@@ -1,13 +1,13 @@
 ﻿$(function () {
     $('#Medicamentos').click(function () {
         var estoqueID = $('#EstoqueID').html().split('-');
-        var href = "/Products/Index?stockID=" + estoqueID[0] + "&type=1";
+        var href = "/Product/Index?stockID=" + estoqueID[0] + "&type=1";
         $('#Medicamentos').attr('href', href);
     });
 
     $('#Suprimentos').click(function () {
         var estoqueID = $('#EstoqueID').html().split('-');
-        var href = "/Products/Index?stockID=" + estoqueID[0] + "&type=2";
+        var href = "/Product/Index?stockID=" + estoqueID[0] + "&type=2";
         $('#Suprimentos').attr('href', href);
     });
 

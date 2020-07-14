@@ -1,10 +1,12 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc;
+using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace WebApp_Semus.Models.Stock
 {
     public class BaseStockViewModel
     {
+        [HiddenInput]
         public int ID { get; set; }
         public string UserID { get; set; }
         [Required]
