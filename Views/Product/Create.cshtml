@@ -27,6 +27,12 @@
             </div>
 
             <div class="form-group">
+                <label asp-for="Quantity" class="control-label"></label>
+                <input asp-for="Quantity" class="form-control" />
+                <span asp-validation-for="Quantity" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
                 <a asp-action="Index" asp-route-stockID="1" asp-route-type="@Model.Type" class="btn btn-secondary">
                     Voltar para Lista
                 </a>

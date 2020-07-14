@@ -69,11 +69,19 @@
                         @foreach (var item in Model)
                         {
                             string productInfo = item.ProductID + "-" +
-                                item.TotalQuantity + "-" +
-                                item.InputQuantity + "-" +
-                                item.DateInput + "-" +
-                                item.OutputQuantity + "-" +
-                                item.DateOutput;
+                                            item.TotalQuantity + "-" +
+                                            item.InputQuantity + "-" +
+                                            item.DateInput + "-" +
+                                            item.OutputQuantity;
+
+                            if (item.DateOutput == DateTime.MinValue)
+                            {
+                                productInfo += "-Nenhuma Saída";
+                            }
+                            else
+                            {
+                                productInfo += "-" + item.DateOutput;
+                            }
 
                             if (item.UserID == null)
                             {

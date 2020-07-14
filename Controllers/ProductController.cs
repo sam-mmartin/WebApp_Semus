@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.VisualBasic.CompilerServices;
 using WebApp_Semus.Data;
 using WebApp_Semus.Entities.Stock;
 using WebApp_Semus.Models;
@@ -58,6 +56,50 @@ namespace WebApp_Semus.Controllers
             {
                 Type = type
             });
+        }
+        #endregion
+
+        #region Post Methods
+        [Authorize(Policy = "SuperAdmin")]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create(ProductViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var userID = _userManager.GetUserId(User);
+                var newProduct = new Product
+                {
+                    Category = model.Category,
+                    Description = model.Description,
+                    Type = model.Type,
+                    UserID = userID
+                };
+
+                _ = _dbContext.Products.Add(newProduct);
+                _ = await _dbContext.SaveChangesAsync();
+
+                var newStockProduct = new StockProduct
+                {
+                    ProductID = newProduct.ID,
+                    StockID = 1,
+                    DateInput = DateTime.Now,
+                    DateOutput = DateTime.MinValue,
+                    UserID = userID,
+                    InputQuantity = model.Quantity,
+                    OutputQuantity = 0,
+                    MissingQuantity = 0,
+                    TotalQuantity = model.Quantity
+                };
+
+                _ = _dbContext.StockProducts.Add(newStockProduct);
+                _ = await _dbContext.SaveChangesAsync();
+
+                TempData["Message"] = "Produto adicionado ao estoque.";
+                return RedirectToAction("Index", new { stockID = 1, type = model.Type });
+            }
+
+            return View(model);
         }
         #endregion
     }

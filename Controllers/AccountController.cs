@@ -82,23 +82,19 @@ namespace WebApp_Semus.Controllers
 
                 var claimsUser = await _userManager.GetClaimsAsync(searchUser);
 
-                if (claimsUser != null)
+                if (claimsUser.Count == 0)
+                {
+                    _ = await _userManager.AddClaimAsync(searchUser, new Claim(user.Claim.Type, user.Claim.Value));
+                }
+                else
                 {
                     foreach (var item in claimsUser)
                     {
                         if (user.Claim.Type.Equals(item.Type))
                         {
-                            _ = await _userManager
-                                .ReplaceClaimAsync(
-                                searchUser, item, new Claim(user.Claim.Type, user.Claim.Value));
+                            _ = await _userManager.ReplaceClaimAsync(searchUser, item, new Claim(user.Claim.Type, user.Claim.Value));
                         }
                     }
-                }
-                else
-                {
-                    _ = await _userManager
-                        .AddClaimAsync(
-                        searchUser, new Claim(user.Claim.Type, user.Claim.Value));
                 }
 
                 TempData["Message"] = "Nível de Acesso modificado.";

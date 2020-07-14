@@ -11,5 +11,7 @@ namespace WebApp_Semus.Models.Stock.Product
         [StringLength(50)]
         [Display(Name = "Categoria")]
         public string Category { get; set; }
+        [Display(Name = "Quantidade")]
+        public int Quantity { get; set; }
     }
 }

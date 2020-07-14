@@ -10,7 +10,7 @@
         $('#dataEntrada').html(ProdutoID[3]);
         $('#Saida').html(ProdutoID[4]);
         $('#dataSaida').html(ProdutoID[5]);
-        //$('#user').html(ProdutoID[6]);
+        $('#user').html(ProdutoID[6]);
     });
 });
 

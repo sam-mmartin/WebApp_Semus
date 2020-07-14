@@ -50,6 +50,7 @@ namespace WebApp_Semus.Controllers
                 .Where(s => s.ID == id)
                 .Include(i => i.StockOrders)
                 .Include(i => i.StockProducts)
+                .ThenInclude(t => t.Product)
                 .SingleOrDefaultAsync();
 
             if (stock.ID == 1)
