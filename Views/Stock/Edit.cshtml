@@ -1,0 +1,36 @@
+﻿@model WebApp_Semus.Models.Stock.Product.StockViewModel
+
+@{
+    ViewData["Title"] = "Editar";
+    Layout = "~/Views/Shared/Stock/_LayoutStock.cshtml";
+}
+
+<main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
+    <h1>Editar</h1>
+
+    <h4>Dados de registro do estoque</h4>
+    <hr />
+    <div class="row">
+        <div class="col-md-4">
+            <form asp-action="Edit">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input asp-for="ID" />
+
+                <div class="form-group">
+                    <label asp-for="Description" class="control-label"></label>
+                    <input asp-for="Description" class="form-control" />
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <a asp-action="Index" asp-route-id="@Model.ID" class="btn btn-secondary">Voltar</a>
+                    <input type="submit" value="Salvar" class="btn btn-primary" />
+                </div>
+            </form>
+        </div>
+    </div>
+</main>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

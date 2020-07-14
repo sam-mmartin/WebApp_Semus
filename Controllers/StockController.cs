@@ -69,6 +69,26 @@ namespace WebApp_Semus.Controllers
             };
             return View(stock);
         }
+
+        [Authorize(Policy = "SuperAdmin")]
+        public async Task<IActionResult> Edit(int? id)
+        {
+            if (id == null)
+            {
+                TempData["Message"] = "Registro do Estoque não encontrado. " +
+                    "Verifique com o administrador se o problema persistir.";
+                return RedirectToAction("Index");
+            }
+
+            var stock = await _dbContext.Stocks.FindAsync(id);
+            var stockUpdate = new StockViewModel
+            {
+                ID = stock.ID,
+                Description = stock.Description
+            };
+
+            return View(stockUpdate);
+        }
         #endregion
 
         #region Post Methods
@@ -92,6 +112,47 @@ namespace WebApp_Semus.Controllers
                 _ = await _dbContext.SaveChangesAsync();
                 TempData["Message"] = "Novo estoque criado com sucesso.";
                 return RedirectToAction("Index");
+            }
+
+            return View(model);
+        }
+
+        [Authorize(Policy = "SuperAdmin")]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(StockViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var stockUpdate = await _dbContext.Stocks.FindAsync(model.ID);
+
+                if (stockUpdate == null)
+                {
+                    TempData["Message"] = "Registro do Estoque não encontrado. " +
+                        "Verifique com o administrador se o problema persistir.";
+                    return RedirectToAction("Index");
+                }
+
+                if (await TryUpdateModelAsync(stockUpdate, "",
+                    s => s.Description, s => s.DateUpdate, s => s.UserID))
+                {
+                    try
+                    {
+                        stockUpdate.DateUpdate = DateTime.Now;
+                        stockUpdate.UserID = _userManager.GetUserId(User);
+
+                        _ = await _dbContext.SaveChangesAsync();
+                        TempData["Message"] = "Registro atualizado.";
+                    }
+                    catch (DbUpdateException)
+                    {
+                        ModelState.AddModelError("", "Não foi possível salvar as alterações. " +
+                            "Tente novamente, se o problema persistir, " +
+                            "entre em contato com o administrador do sistema.");
+                    }
+
+                    return RedirectToAction("Details", new { id = model.ID });
+                }
             }
 
             return View(model);
