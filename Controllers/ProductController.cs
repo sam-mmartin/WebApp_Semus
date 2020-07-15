@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WebApp_Semus.Data;
 using WebApp_Semus.Entities.Stock;
+using WebApp_Semus.GlobalMethods;
 using WebApp_Semus.Models;
 using WebApp_Semus.Models.Stock.Product;
 
@@ -27,17 +28,35 @@ namespace WebApp_Semus.Controllers
         #endregion
 
         #region Get Methods
-        public async Task<IActionResult> Index(int stockID, byte type)
-        {
-            var stock = await _dbContext.Stocks
-                .Where(s => s.ID == stockID)
-                .Include(t => t.StockProducts)
-                .ThenInclude(p => p.Product)
-                .ThenInclude(i => i.IdentityUser)
-                .SingleOrDefaultAsync();
 
-            var products = stock.StockProducts
-                .Where(s => s.Product.Type == type);
+        public async Task<IActionResult> Index(
+            int stockID,
+            byte type,
+            string currentFilter,
+            string searchString,
+            int? pageNumber)
+        {
+            var stock = await _dbContext.Stocks.FindAsync(stockID);
+
+            var products = _dbContext.StockProducts
+                .Where(s => s.StockID == stockID)
+                .Include(p => p.Product).Where(p => p.Product.Type == type)
+                .Include(u => u.IdentityUser)
+                .Select(s => s);
+
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                products = products.Where(p => p.Product.Description.Contains(searchString));
+            }
+
+            if (searchString != null)
+            {
+                pageNumber = 1;
+            }
+            else
+            {
+                currentFilter = searchString;
+            }
 
             ViewBag.Stock = new StockBagViewModel()
             {
@@ -45,8 +64,41 @@ namespace WebApp_Semus.Controllers
                 Description = stock.Description
             };
 
+            ViewData["CurrentFilter"] = searchString;
             ViewBag.Type = type;
-            return View(products);
+            int pageSize = 10;
+            return View(await PaginatedList<StockProduct>.CreateAsync(products, pageNumber ?? 1, pageSize));
+        }
+
+        public async Task<IActionResult> Details(
+            byte type,
+            string currentFilter,
+            string searchString,
+            int? pageNumber)
+        {
+            var allProducts = _dbContext.Products
+                .Where(p => p.Type == type)
+                .Include(s => s.StockProducts)
+                .ThenInclude(s => s.Stock)
+                .Select(s => s);
+
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                allProducts = allProducts.Where(p => p.Description.Contains(searchString));
+            }
+            if (searchString != null)
+            {
+                pageNumber = 1;
+            }
+            else
+            {
+                currentFilter = searchString;
+            }
+
+            ViewData["CurrentFilter"] = searchString;
+            ViewBag.Type = type;
+            int pageSize = 10;
+            return View(await PaginatedList<Product>.CreateAsync(allProducts, pageNumber ?? 1, pageSize));
         }
 
         [Authorize(Policy = "SuperAdmin")]
@@ -60,6 +112,7 @@ namespace WebApp_Semus.Controllers
         #endregion
 
         #region Post Methods
+
         [Authorize(Policy = "SuperAdmin")]
         [HttpPost]
         [ValidateAntiForgeryToken]

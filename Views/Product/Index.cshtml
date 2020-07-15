@@ -1,4 +1,4 @@
-﻿@model IEnumerable<WebApp_Semus.Entities.Stock.StockProduct>
+﻿@model WebApp_Semus.GlobalMethods.PaginatedList<WebApp_Semus.Entities.Stock.StockProduct>
 
 @{
     ViewData["Title"] = "Index";
@@ -47,16 +47,14 @@
                 <table class="table table-hover">
                     <thead>
                         <tr>
-                            <th scope="col">ID</th>
+                            <th scope="col">Código</th>
                             <th scope="col">
                                 <a asp-action="Index" asp-route-stockID="@ViewBag.Stock.ID" asp-route-type="@ViewBag.Type">Descrição</a>
                                 @*<i class="fas fa-angle-double-@desc_down_up text-primary"></i>*@
-                                @*@Html.ActionLink("Descrição", "Index", new { estoqueID = ViewBag.Stock.ID, TipoProduto = ViewBag.TipoProduto, sortOrder = ViewBag.DescricaoSortParm, currentFilter = ViewBag.CurrentFilter })*@
                             </th>
                             <th scope="col">
                                 <a asp-action="Index" asp-route-stockID="@ViewBag.Stock.ID" asp-route-type="@ViewBag.Type">Categoria</a>
                                 @*<i class="fas fa-angle-double-@categ_down_up text-primary"></i>*@
-                                @*@Html.ActionLink("Categoria", "Index", new { estoqueID = ViewBag.Stock.ID, TipoProduto = ViewBag.TipoProduto, sortOrder = ViewBag.CategoriaSortParm, currentFilter = ViewBag.CurrentFilter })*@
                             </th>
                             <th scope="col"><i class="fas fa-info-circle"></i></th>
                             @if (ViewBag.Stock.ID == 1)
@@ -111,11 +109,32 @@
                         }
                     </tbody>
                 </table>
-                <br />
-                @*Página @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) de @Model.PageCount
-
-                    @Html.PagedListPager(Model, page => Url.Action("Index", new { page, estoqueID = ViewBag.Stock.ID, TipoProduto = ViewBag.TipoProduto, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))*@
             </div>
+        </div>
+
+        <!-- Paginação -->
+        <div class="row">
+            @{
+                var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+                var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+            }
+
+            <a asp-action="Index"
+               asp-route-stockID="@ViewBag.Stock.ID"
+               asp-route-type="@ViewBag.Type"
+               asp-route-pageNumber="@(Model.PageIndex - 1)"
+               asp-route-currentFilter="@ViewData["CurrentFilter"]"
+               class="btn btn-default @prevDisabled">
+                Anterior
+            </a>
+            <a asp-action="Index"
+               asp-route-stockID="@ViewBag.Stock.ID"
+               asp-route-type="@ViewBag.Type"
+               asp-route-pageNumber="@(Model.PageIndex + 1)"
+               asp-route-currentFilter="@ViewData["CurrentFilter"]"
+               class="btn btn-default @nextDisabled">
+                Próximo
+            </a>
         </div>
     </div>
 </main>

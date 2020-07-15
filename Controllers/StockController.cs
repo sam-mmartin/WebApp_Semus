@@ -27,15 +27,10 @@ namespace WebApp_Semus.Controllers
         #endregion
 
         #region Get Methods
+
         public async Task<IActionResult> Index()
         {
             return View(await _dbContext.Stocks.ToListAsync());
-        }
-
-        [Authorize(Policy = "SuperAdmin")]
-        public IActionResult Create()
-        {
-            return View();
         }
 
         public async Task<IActionResult> Details(int? id)
@@ -71,6 +66,12 @@ namespace WebApp_Semus.Controllers
         }
 
         [Authorize(Policy = "SuperAdmin")]
+        public IActionResult Create()
+        {
+            return View();
+        }
+
+        [Authorize(Policy = "SuperAdmin")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -92,6 +93,7 @@ namespace WebApp_Semus.Controllers
         #endregion
 
         #region Post Methods
+
         [Authorize(Policy = "SuperAdmin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
