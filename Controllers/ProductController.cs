@@ -61,7 +61,7 @@ namespace WebApp_Semus.Controllers
             ViewBag.Stock = new StockBagViewModel()
             {
                 ID = stock.ID,
-                Description = stock.Description
+                Description = stock.Name
             };
 
             ViewData["CurrentFilter"] = searchString;
@@ -123,8 +123,8 @@ namespace WebApp_Semus.Controllers
                 var userID = _userManager.GetUserId(User);
                 var newProduct = new Product
                 {
-                    Category = model.Category,
-                    Description = model.Description,
+                    PharmaceuticalForm = model.Category,
+                    Name = model.Description,
                     Type = model.Type,
                     UserID = userID
                 };

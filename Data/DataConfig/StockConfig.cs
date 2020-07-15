@@ -9,7 +9,7 @@ namespace WebApp_Semus.Data.DataConfig
         public void Configure(EntityTypeBuilder<Stock> builder)
         {
             _ = builder
-                .Property(p => p.Description)
+                .Property(p => p.Name)
                 .IsRequired()
                 .HasMaxLength(100);
 

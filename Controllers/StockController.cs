@@ -60,7 +60,7 @@ namespace WebApp_Semus.Controllers
             ViewBag.Stock = new StockBagViewModel()
             {
                 ID = stock.ID,
-                Description = stock.Description
+                Description = stock.Name
             };
             return View(stock);
         }
@@ -85,7 +85,7 @@ namespace WebApp_Semus.Controllers
             var stockUpdate = new StockViewModel
             {
                 ID = stock.ID,
-                Description = stock.Description
+                Description = stock.Name
             };
 
             return View(stockUpdate);
@@ -104,7 +104,7 @@ namespace WebApp_Semus.Controllers
                 var userID = _userManager.GetUserId(User);
                 var newStock = new Stock
                 {
-                    Description = model.Description,
+                    Name = model.Description,
                     UserID = userID,
                     DateRegister = DateTime.Now,
                     DateUpdate = DateTime.Now
@@ -136,7 +136,7 @@ namespace WebApp_Semus.Controllers
                 }
 
                 if (await TryUpdateModelAsync(stockUpdate, "",
-                    s => s.Description, s => s.DateUpdate, s => s.UserID))
+                    s => s.Name, s => s.DateUpdate, s => s.UserID))
                 {
                     try
                     {

@@ -9,12 +9,12 @@ namespace WebApp_Semus.Data.DataConfig
         public void Configure(EntityTypeBuilder<Product> builder)
         {
             _ = builder
-                .Property(p => p.Description)
+                .Property(p => p.Name)
                 .IsRequired()
                 .HasMaxLength(100);
 
             _ = builder
-                .Property(p => p.Category)
+                .Property(p => p.PharmaceuticalForm)
                 .IsRequired()
                 .HasMaxLength(50);
 

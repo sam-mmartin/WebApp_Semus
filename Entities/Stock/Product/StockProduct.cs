@@ -6,7 +6,7 @@ namespace WebApp_Semus.Entities.Stock
     public class StockProduct
     {
         public int StockID { get; set; }
-        public int ProductID { get; set; }
+        public int MedicamentID { get; set; }
         public string UserID { get; set; }
 
         public int TotalQuantity { get; set; }
@@ -18,7 +18,7 @@ namespace WebApp_Semus.Entities.Stock
         public DateTime DateOutput { get; set; }
 
         public virtual IdentityUser IdentityUser { get; set; }
-        public virtual Product Product { get; set; }
+        public virtual Medicament Medicament { get; set; }
         public virtual Stock Stock { get; set; }
     }
 }
