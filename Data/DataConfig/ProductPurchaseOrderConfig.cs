@@ -8,7 +8,7 @@ namespace WebApp_Semus.Data.DataConfig
     {
         public void Configure(EntityTypeBuilder<ProductPurchaseOrder> builder)
         {
-            _ = builder.HasKey(k => new { k.ProductID, k.PurchaseOrderID });
+            _ = builder.HasKey(k => new { k.MedicamentID, k.PurchaseOrderID });
 
             _ = builder
                 .HasOne(s => s.PurchaseOrder)
@@ -16,9 +16,9 @@ namespace WebApp_Semus.Data.DataConfig
                 .HasForeignKey(k => k.PurchaseOrderID);
 
             _ = builder
-                .HasOne(s => s.Product)
+                .HasOne(s => s.Medicament)
                 .WithMany()
-                .HasForeignKey(k => k.ProductID);
+                .HasForeignKey(k => k.MedicamentID);
         }
     }
 }

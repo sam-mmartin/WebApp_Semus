@@ -1,49 +1,57 @@
-﻿@model WebApp_Semus.GlobalMethods.PaginatedList<WebApp_Semus.Entities.Stock.Product>
+﻿@model WebApp_Semus.GlobalMethods.PaginatedList<WebApp_Semus.Entities.Stock.PharmacologicalGroup>
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/Stock/_LayoutStock.cshtml";
 }
 
 <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
     <!-- Header -->
     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-        <h1 class="h2">Distribuição <small class="text-muted">Tipo: @ViewBag.Type</small></h1>
+        <h1 class="h2">Grupos Farmacológicos</h1>
+
         <div class="btn-toolbar mb-2 mb-md-0">
+            <div class="btn-group mr-2">
+                <a asp-controller="Stock"
+                   asp-action="Index"
+                   class="btn btn-sm btn-outline-secondary">
+                    &laquo; Voltar
+                </a>
+
+                <a asp-action="Create"
+                   class="btn btn-sm btn-outline-secondary">
+                    Novo Grupo
+                </a>
+            </div>
+
             <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle">
-                <span data-feather="calendar"></span> This week
+                <span data-feather="calendar"></span>
+                This week
             </button>
         </div>
     </div>
 
+    <!-- section -->
     <div class="container">
         <div class="row">
             @foreach (var item in Model)
             {
-                int quantidade = 0;
-                foreach (var elemento in item.StockProducts)
-                {
-                    quantidade += elemento.TotalQuantity;
-                }
-
                 <div class="col-md-4">
                     <div class="card-deck mb-3 text-center">
                         <div class="card mb-4 shadow-sm">
                             <div class="card-header">
-                                <h6 class="my-0 font-weight-normal">@item.Description</h6>
+                                <h6 class="my-0 font-weight-normal">@item.SectionName - @item.Section</h6>
                             </div>
 
                             <div class="card-body">
                                 <h4 class="card-title pricing-card-title">
-                                    <small class="text-muted">Quantidade Total /</small> @quantidade
+                                    <small class="text-muted">@item.ID - @item.Name</small>
                                 </h4>
 
                                 <ul class="list-unstyled mt-3 mb-4">
-                                    <li><strong>Estoque : Quantidade</strong></li>
-                                    @foreach (var elemento in item.StockProducts)
-                                    {
-                                        <li>@elemento.Stock.Description : @elemento.TotalQuantity</li>
-                                    }
+                                    <li>@item.FirstSubGroup - @item.FirstGroupName</li>
+                                    <li>@item.SecondSubGroup - @item.SecondGroupName</li>
+                                    <li>@item.ThirdSubGroup - @item.ThirdGroupName</li>
                                 </ul>
                             </div>
                         </div>
@@ -59,15 +67,13 @@
                 var nextDisabled = !Model.HasNextPage ? "disabled" : "";
             }
 
-            <a asp-action="Details"
-               asp-route-type="@ViewBag.Type"
+            <a asp-action="Index"
                asp-route-pageNumber="@(Model.PageIndex - 1)"
                asp-route-currentFilter="@ViewData["CurrentFilter"]"
                class="btn btn-default @prevDisabled">
                 Anterior
             </a>
-            <a asp-action="Details"
-               asp-route-type="@ViewBag.Type"
+            <a asp-action="Index"
                asp-route-pageNumber="@(Model.PageIndex + 1)"
                asp-route-currentFilter="@ViewData["CurrentFilter"]"
                class="btn btn-default @nextDisabled">

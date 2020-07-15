@@ -7,9 +7,11 @@ namespace WebApp_Semus.Entities.Stock
 {
     public class Stock : Base
     {
+        // Atributes
         public DateTime DateRegister { get; set; }
         public DateTime DateUpdate { get; set; }
 
+        // Navegation Property
         public virtual ICollection<StockProduct> StockProducts { get; set; }
         public virtual ICollection<StockOrder> StockOrders { get; set; }
         public virtual ICollection<PurchaseOrder> PurchaseOrders { get; set; }

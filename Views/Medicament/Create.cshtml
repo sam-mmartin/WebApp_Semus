@@ -1,0 +1,56 @@
+﻿@model WebApp_Semus.Models.Stock.Product.MedicamentViewModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Adicionar</h1>
+<h4>Medicamento</h4>
+<hr />
+
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="PharmacologicalGroupID" class="control-label"></label>
+                <input asp-for="PharmacologicalGroupID" class="form-control" />
+                <span asp-validation-for="PharmacologicalGroupID" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="PharmaceuticalForm" class="control-label"></label>
+                <input asp-for="PharmaceuticalForm" class="form-control" />
+                <span asp-validation-for="PharmaceuticalForm" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Availability" class="control-label"></label>
+                <input asp-for="Availability" class="form-control" />
+                <span asp-validation-for="Availability" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Quantity" class="control-label"></label>
+                <input asp-for="Quantity" class="form-control" />
+                <span asp-validation-for="Quantity" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <a asp-action="Index" class="btn btn-secondary">Voltar</a>
+                <input type="submit" value="Salvar" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

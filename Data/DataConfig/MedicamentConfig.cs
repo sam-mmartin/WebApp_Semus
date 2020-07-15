@@ -4,9 +4,9 @@ using WebApp_Semus.Entities.Stock;
 
 namespace WebApp_Semus.Data.DataConfig
 {
-    public class ProductConfig : IEntityTypeConfiguration<Product>
+    public class MedicamentConfig : IEntityTypeConfiguration<Medicament>
     {
-        public void Configure(EntityTypeBuilder<Product> builder)
+        public void Configure(EntityTypeBuilder<Medicament> builder)
         {
             _ = builder
                 .Property(p => p.Name)
@@ -16,16 +16,21 @@ namespace WebApp_Semus.Data.DataConfig
             _ = builder
                 .Property(p => p.PharmaceuticalForm)
                 .IsRequired()
-                .HasMaxLength(50);
+                .HasMaxLength(100);
 
             _ = builder
-                .Property(p => p.Type)
+                .Property(p => p.Availability)
                 .IsRequired();
 
             _ = builder
                 .HasOne(s => s.IdentityUser)
                 .WithMany()
                 .HasForeignKey(k => k.UserID);
+
+            _ = builder
+                .HasOne(s => s.PharmacologicalGroup)
+                .WithMany(p => p.Medicaments)
+                .HasForeignKey(k => k.PharmacologicalGroupID);
         }
     }
 }

@@ -1,43 +1,27 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using System;
+﻿using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace WebApp_Semus.Models.Stock
 {
-    public class BaseStockViewModel
-    {
-        [HiddenInput]
-        public int ID { get; set; }
-        public string UserID { get; set; }
-        [Required]
-        [StringLength(100)]
-        [Display(Name = "Descrição")]
-        public string Description { get; set; }
-    }
-
     public class BaseOrderViewModel
     {
+        // Key
         public int ID { get; set; }
+
+        // Foreign Key
         public int StockID { get; set; }
         public string UserID { get; set; }
 
-        public byte Type { get; set; }
+        // Atributes
         [Display(Name = "Faturado")]
         public bool Invoice { get; set; }
 
         [DataType(DataType.Date)]
         [Display(Name = "Data de Registro")]
         public DateTime DateInput { get; set; }
+
         [DataType(DataType.Date)]
         [Display(Name = "Data da Fatura")]
         public DateTime DateInvoice { get; set; }
-    }
-
-    public class BaseProductViewModel
-    {
-        public int ProductID { get; set; }
-        [Required]
-        [Display(Name = "Quantidade")]
-        public int Quantity { get; set; }
     }
 }

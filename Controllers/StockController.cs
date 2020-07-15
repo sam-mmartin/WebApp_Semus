@@ -12,7 +12,7 @@ using WebApp_Semus.Models.Stock.Product;
 
 namespace WebApp_Semus.Controllers
 {
-    [Authorize(Policy = "Admin")]
+    //[Authorize(Policy = "Admin")]
     public class StockController : Controller
     {
         #region Var & Constructor
@@ -37,7 +37,8 @@ namespace WebApp_Semus.Controllers
         {
             if (id == null)
             {
-                TempData["Message"] = "Estoque não encontrado. Registro apagado por outro usuário.";
+                TempData["Message"] = "Estoque não encontrado. " +
+                    "Registro apagado por outro usuário.";
                 return RedirectToAction("Index");
             }
 
@@ -45,15 +46,14 @@ namespace WebApp_Semus.Controllers
                 .Where(s => s.ID == id)
                 .Include(i => i.StockOrders)
                 .Include(i => i.StockProducts)
-                .ThenInclude(t => t.Product)
+                .ThenInclude(t => t.Medicament)
                 .SingleOrDefaultAsync();
 
             if (stock.ID == 1)
             {
                 ViewBag.Orders = new OrdersBagViewModel()
                 {
-                    CountProduct = await _dbContext.StockOrders.Where(p => p.Type == 1 && p.Invoice == false).CountAsync(),
-                    CountSuply = await _dbContext.StockOrders.Where(p => p.Type == 2 && p.Invoice == false).CountAsync()
+                    CountProduct = await _dbContext.StockOrders.Where(p => p.Invoice == false).CountAsync()
                 };
             }
 
@@ -65,13 +65,13 @@ namespace WebApp_Semus.Controllers
             return View(stock);
         }
 
-        [Authorize(Policy = "SuperAdmin")]
+        //[Authorize(Policy = "SuperAdmin")]
         public IActionResult Create()
         {
             return View();
         }
 
-        [Authorize(Policy = "SuperAdmin")]
+        //[Authorize(Policy = "SuperAdmin")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -85,7 +85,7 @@ namespace WebApp_Semus.Controllers
             var stockUpdate = new StockViewModel
             {
                 ID = stock.ID,
-                Description = stock.Name
+                Name = stock.Name
             };
 
             return View(stockUpdate);
@@ -94,7 +94,7 @@ namespace WebApp_Semus.Controllers
 
         #region Post Methods
 
-        [Authorize(Policy = "SuperAdmin")]
+        //[Authorize(Policy = "SuperAdmin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(StockViewModel model)
@@ -104,7 +104,7 @@ namespace WebApp_Semus.Controllers
                 var userID = _userManager.GetUserId(User);
                 var newStock = new Stock
                 {
-                    Name = model.Description,
+                    Name = model.Name,
                     UserID = userID,
                     DateRegister = DateTime.Now,
                     DateUpdate = DateTime.Now
@@ -112,6 +112,7 @@ namespace WebApp_Semus.Controllers
 
                 _ = _dbContext.Stocks.Add(newStock);
                 _ = await _dbContext.SaveChangesAsync();
+
                 TempData["Message"] = "Novo estoque criado com sucesso.";
                 return RedirectToAction("Index");
             }
@@ -119,7 +120,7 @@ namespace WebApp_Semus.Controllers
             return View(model);
         }
 
-        [Authorize(Policy = "SuperAdmin")]
+        //[Authorize(Policy = "SuperAdmin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(StockViewModel model)

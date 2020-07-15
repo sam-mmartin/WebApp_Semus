@@ -2,9 +2,13 @@
 {
     public class BaseProduct
     {
-        public int ProductID { get; set; }
+        // Foreign Key Medicament
+        public int MedicamentID { get; set; }
+
+        // Atributes
         public int Quantity { get; set; }
 
-        public virtual Product Product { get; set; }
+        // Navegation Property
+        public virtual Medicament Medicament { get; set; }
     }
 }

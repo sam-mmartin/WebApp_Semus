@@ -1,23 +1,22 @@
-﻿using Microsoft.AspNetCore.Identity;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace WebApp_Semus.Entities.Stock
 {
-    public class PharmacologicalGroup
+    public class PharmacologicalGroup : Base
     {
-        public int ID { get; set; }
-        public string UserID { get; set; }
+        // Atributes
+        public string Section { get; set; }
+        public string SectionName { get; set; }
 
         public string FirstSubGroup { get; set; }
         public string SecondSubGroup { get; set; }
         public string ThirdSubGroup { get; set; }
 
-        public string GroupName { get; set; }
         public string FirstGroupName { get; set; }
         public string SecondGroupName { get; set; }
         public string ThirdGroupName { get; set; }
 
-        public virtual IdentityUser IdentityUser { get; set; }
+        // Navegation Property
         public virtual ICollection<Medicament> Medicaments { get; set; }
     }
 }

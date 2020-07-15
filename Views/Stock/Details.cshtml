@@ -8,17 +8,26 @@
 <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
     <!-- Header -->
     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-        <h1 class="h2" id="EstoqueID">@Model.ID - @Model.Description</h1>
+        <h1 class="h2" id="EstoqueID">@Model.ID - @Model.Name</h1>
 
         <div class="btn-toolbar mb-2 mb-md-0">
             <div class="btn-group mr-2">
-                <a asp-action="Edit" asp-route-id="@Model.ID" class="btn btn-sm btn-outline-warning">Editar</a>
+                <a asp-action="Edit"
+                   asp-route-id="@Model.ID"
+                   class="btn btn-sm btn-outline-warning">
+                    Editar
+                </a>
+
                 @if (Model.ID == 1)
                 {
-                    <a asp-controller="Product" asp-action="Create" asp-route-type="1" class="btn btn-sm btn-outline-secondary">Cadastrar Medicamento</a>
-                    <a asp-controller="Product" asp-action="Create" asp-route-type="2" class="btn btn-sm btn-outline-secondary">Cadastrar Suprimento</a>
+                    <a asp-controller="Medicament"
+                       asp-action="Create"
+                       class="btn btn-sm btn-outline-secondary">
+                        Cadastrar Medicamento
+                    </a>
                 }
             </div>
+
             <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle">
                 <span data-feather="calendar"></span>
                 This week
@@ -38,7 +47,8 @@
                 </div>
                 <div class="card-body">
                     <h5 class="card-title">
-                        Todos Produtos: @Model.StockProducts.Where(e => e.Product.Type == 1).Count()<br />
+                        Todos Produtos:
+                        @Model.StockProducts.Count()<br />
                         Pedidos:
                         @if (ViewBag.Orders != null)
                         {
@@ -46,29 +56,7 @@
                         }
                         else
                         {
-                            @Model.StockOrders.Where(p => p.Type == 1 && p.Invoice == false).Count()
-                        }
-                    </h5>
-                    <p class="card-text"></p>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-6">
-            <div class="card text-center">
-                <div class="card-header">
-                    <h5 class="card-title text-danger">Suprimentos</h5>
-                </div>
-                <div class="card-body">
-                    <h5 class="card-title">
-                        Todos Produtos: @Model.StockProducts.Where(e => e.Product.Type == 2).Count()<br />
-                        Pedidos:
-                        @if (ViewBag.Orders != null)
-                        {
-                            @ViewBag.Orders.CountSuply
-                        }
-                        else
-                        {
-                            @Model.StockOrders.Where(p => p.Type == 2 && p.Invoice == false).Count()
+                            @Model.StockOrders.Where(p => p.Invoice == false).Count()
                         }
                     </h5>
                     <p class="card-text"></p>

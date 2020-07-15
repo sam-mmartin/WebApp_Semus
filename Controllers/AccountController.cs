@@ -12,7 +12,7 @@ using WebApp_Semus.Lists;
 
 namespace WebApp_Semus.Controllers
 {
-    [Authorize(Policy = "SuperAdmin")]
+    //[Authorize(Policy = "SuperAdmin")]
     public class AccountController : Controller
     {
         #region Var & Constructor

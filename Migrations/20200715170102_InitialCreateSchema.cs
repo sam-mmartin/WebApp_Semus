@@ -153,21 +153,25 @@ namespace WebApp_Semus.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Products",
+                name: "PharmacologicalGroups",
                 columns: table => new
                 {
                     ID = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     UserID = table.Column<string>(nullable: true),
-                    Description = table.Column<string>(maxLength: 100, nullable: false),
-                    Type = table.Column<byte>(nullable: false),
-                    Category = table.Column<string>(maxLength: 50, nullable: false)
+                    Name = table.Column<string>(maxLength: 100, nullable: false),
+                    FirstSubGroup = table.Column<string>(maxLength: 20, nullable: true),
+                    SecondSubGroup = table.Column<string>(maxLength: 20, nullable: true),
+                    ThirdSubGroup = table.Column<string>(maxLength: 20, nullable: true),
+                    FirstGroupName = table.Column<string>(maxLength: 100, nullable: true),
+                    SecondGroupName = table.Column<string>(maxLength: 100, nullable: true),
+                    ThirdGroupName = table.Column<string>(maxLength: 100, nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Products", x => x.ID);
+                    table.PrimaryKey("PK_PharmacologicalGroups", x => x.ID);
                     table.ForeignKey(
-                        name: "FK_Products_AspNetUsers_UserID",
+                        name: "FK_PharmacologicalGroups_AspNetUsers_UserID",
                         column: x => x.UserID,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
@@ -181,7 +185,7 @@ namespace WebApp_Semus.Migrations
                     ID = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     UserID = table.Column<string>(nullable: true),
-                    Description = table.Column<string>(maxLength: 100, nullable: false),
+                    Name = table.Column<string>(maxLength: 100, nullable: false),
                     DateRegister = table.Column<DateTime>(nullable: false),
                     DateUpdate = table.Column<DateTime>(nullable: false)
                 },
@@ -197,6 +201,35 @@ namespace WebApp_Semus.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Medicaments",
+                columns: table => new
+                {
+                    ID = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserID = table.Column<string>(nullable: true),
+                    Name = table.Column<string>(maxLength: 100, nullable: false),
+                    PharmacologicalGroupID = table.Column<int>(nullable: false),
+                    PharmaceuticalForm = table.Column<string>(maxLength: 100, nullable: false),
+                    Availability = table.Column<string>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Medicaments", x => x.ID);
+                    table.ForeignKey(
+                        name: "FK_Medicaments_PharmacologicalGroups_PharmacologicalGroupID",
+                        column: x => x.PharmacologicalGroupID,
+                        principalTable: "PharmacologicalGroups",
+                        principalColumn: "ID",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Medicaments_AspNetUsers_UserID",
+                        column: x => x.UserID,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "PurchaseOrders",
                 columns: table => new
                 {
@@ -204,7 +237,6 @@ namespace WebApp_Semus.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     StockID = table.Column<int>(nullable: false),
                     UserID = table.Column<string>(nullable: true),
-                    Type = table.Column<byte>(nullable: false),
                     Invoice = table.Column<bool>(nullable: false),
                     DateInput = table.Column<DateTime>(nullable: false),
                     DateInvoice = table.Column<DateTime>(nullable: false)
@@ -234,7 +266,6 @@ namespace WebApp_Semus.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     StockID = table.Column<int>(nullable: false),
                     UserID = table.Column<string>(nullable: true),
-                    Type = table.Column<byte>(nullable: false),
                     Invoice = table.Column<bool>(nullable: false),
                     DateInput = table.Column<DateTime>(nullable: false),
                     DateInvoice = table.Column<DateTime>(nullable: false)
@@ -261,7 +292,7 @@ namespace WebApp_Semus.Migrations
                 columns: table => new
                 {
                     StockID = table.Column<int>(nullable: false),
-                    ProductID = table.Column<int>(nullable: false),
+                    MedicamentID = table.Column<int>(nullable: false),
                     UserID = table.Column<string>(nullable: true),
                     TotalQuantity = table.Column<int>(nullable: false),
                     InputQuantity = table.Column<int>(nullable: false),
@@ -272,11 +303,11 @@ namespace WebApp_Semus.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_StockProducts", x => new { x.StockID, x.ProductID });
+                    table.PrimaryKey("PK_StockProducts", x => new { x.StockID, x.MedicamentID });
                     table.ForeignKey(
-                        name: "FK_StockProducts_Products_ProductID",
-                        column: x => x.ProductID,
-                        principalTable: "Products",
+                        name: "FK_StockProducts_Medicaments_MedicamentID",
+                        column: x => x.MedicamentID,
+                        principalTable: "Medicaments",
                         principalColumn: "ID",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -297,17 +328,17 @@ namespace WebApp_Semus.Migrations
                 name: "ProductPurchaseOrders",
                 columns: table => new
                 {
-                    ProductID = table.Column<int>(nullable: false),
+                    MedicamentID = table.Column<int>(nullable: false),
                     PurchaseOrderID = table.Column<int>(nullable: false),
                     Quantity = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ProductPurchaseOrders", x => new { x.ProductID, x.PurchaseOrderID });
+                    table.PrimaryKey("PK_ProductPurchaseOrders", x => new { x.MedicamentID, x.PurchaseOrderID });
                     table.ForeignKey(
-                        name: "FK_ProductPurchaseOrders_Products_ProductID",
-                        column: x => x.ProductID,
-                        principalTable: "Products",
+                        name: "FK_ProductPurchaseOrders_Medicaments_MedicamentID",
+                        column: x => x.MedicamentID,
+                        principalTable: "Medicaments",
                         principalColumn: "ID",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -322,17 +353,17 @@ namespace WebApp_Semus.Migrations
                 name: "ProductOrders",
                 columns: table => new
                 {
-                    ProductID = table.Column<int>(nullable: false),
+                    MedicamentID = table.Column<int>(nullable: false),
                     StockOrderID = table.Column<int>(nullable: false),
                     Quantity = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ProductOrders", x => new { x.ProductID, x.StockOrderID });
+                    table.PrimaryKey("PK_ProductOrders", x => new { x.MedicamentID, x.StockOrderID });
                     table.ForeignKey(
-                        name: "FK_ProductOrders_Products_ProductID",
-                        column: x => x.ProductID,
-                        principalTable: "Products",
+                        name: "FK_ProductOrders_Medicaments_MedicamentID",
+                        column: x => x.MedicamentID,
+                        principalTable: "Medicaments",
                         principalColumn: "ID",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -383,6 +414,21 @@ namespace WebApp_Semus.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Medicaments_PharmacologicalGroupID",
+                table: "Medicaments",
+                column: "PharmacologicalGroupID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Medicaments_UserID",
+                table: "Medicaments",
+                column: "UserID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PharmacologicalGroups_UserID",
+                table: "PharmacologicalGroups",
+                column: "UserID");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_ProductOrders_StockOrderID",
                 table: "ProductOrders",
                 column: "StockOrderID");
@@ -391,11 +437,6 @@ namespace WebApp_Semus.Migrations
                 name: "IX_ProductPurchaseOrders_PurchaseOrderID",
                 table: "ProductPurchaseOrders",
                 column: "PurchaseOrderID");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Products_UserID",
-                table: "Products",
-                column: "UserID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_PurchaseOrders_StockID",
@@ -418,9 +459,9 @@ namespace WebApp_Semus.Migrations
                 column: "UserID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_StockProducts_ProductID",
+                name: "IX_StockProducts_MedicamentID",
                 table: "StockProducts",
-                column: "ProductID");
+                column: "MedicamentID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_StockProducts_UserID",
@@ -469,10 +510,13 @@ namespace WebApp_Semus.Migrations
                 name: "PurchaseOrders");
 
             migrationBuilder.DropTable(
-                name: "Products");
+                name: "Medicaments");
 
             migrationBuilder.DropTable(
                 name: "Stocks");
+
+            migrationBuilder.DropTable(
+                name: "PharmacologicalGroups");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");

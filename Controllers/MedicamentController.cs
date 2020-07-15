@@ -14,13 +14,13 @@ using WebApp_Semus.Models.Stock.Product;
 namespace WebApp_Semus.Controllers
 {
     [Authorize(Policy = "Admin")]
-    public class ProductController : Controller
+    public class MedicamentController : Controller
     {
         #region Var & Constructor
         private readonly ApplicationDbContext _dbContext;
         private readonly UserManager<IdentityUser> _userManager;
 
-        public ProductController(ApplicationDbContext dbContext, UserManager<IdentityUser> userManager)
+        public MedicamentController(ApplicationDbContext dbContext, UserManager<IdentityUser> userManager)
         {
             _dbContext = dbContext;
             _userManager = userManager;
@@ -31,7 +31,6 @@ namespace WebApp_Semus.Controllers
 
         public async Task<IActionResult> Index(
             int stockID,
-            byte type,
             string currentFilter,
             string searchString,
             int? pageNumber)
@@ -40,13 +39,13 @@ namespace WebApp_Semus.Controllers
 
             var products = _dbContext.StockProducts
                 .Where(s => s.StockID == stockID)
-                .Include(p => p.Product).Where(p => p.Product.Type == type)
+                .Include(p => p.Medicament)
                 .Include(u => u.IdentityUser)
                 .Select(s => s);
 
             if (!string.IsNullOrEmpty(searchString))
             {
-                products = products.Where(p => p.Product.Description.Contains(searchString));
+                products = products.Where(p => p.Medicament.Name.Contains(searchString));
             }
 
             if (searchString != null)
@@ -65,27 +64,25 @@ namespace WebApp_Semus.Controllers
             };
 
             ViewData["CurrentFilter"] = searchString;
-            ViewBag.Type = type;
             int pageSize = 10;
             return View(await PaginatedList<StockProduct>.CreateAsync(products, pageNumber ?? 1, pageSize));
         }
 
         public async Task<IActionResult> Details(
-            byte type,
             string currentFilter,
             string searchString,
             int? pageNumber)
         {
-            var allProducts = _dbContext.Products
-                .Where(p => p.Type == type)
+            var allProducts = _dbContext.Medicaments
                 .Include(s => s.StockProducts)
                 .ThenInclude(s => s.Stock)
                 .Select(s => s);
 
             if (!string.IsNullOrEmpty(searchString))
             {
-                allProducts = allProducts.Where(p => p.Description.Contains(searchString));
+                allProducts = allProducts.Where(p => p.Name.Contains(searchString));
             }
+
             if (searchString != null)
             {
                 pageNumber = 1;
@@ -96,18 +93,14 @@ namespace WebApp_Semus.Controllers
             }
 
             ViewData["CurrentFilter"] = searchString;
-            ViewBag.Type = type;
             int pageSize = 10;
-            return View(await PaginatedList<Product>.CreateAsync(allProducts, pageNumber ?? 1, pageSize));
+            return View(await PaginatedList<Medicament>.CreateAsync(allProducts, pageNumber ?? 1, pageSize));
         }
 
         [Authorize(Policy = "SuperAdmin")]
-        public IActionResult Create(byte type)
+        public IActionResult Create()
         {
-            return base.View(new ProductViewModel
-            {
-                Type = type
-            });
+            return View();
         }
         #endregion
 
@@ -116,25 +109,26 @@ namespace WebApp_Semus.Controllers
         [Authorize(Policy = "SuperAdmin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(ProductViewModel model)
+        public async Task<IActionResult> Create(MedicamentViewModel model)
         {
             if (ModelState.IsValid)
             {
                 var userID = _userManager.GetUserId(User);
-                var newProduct = new Product
+                var newProduct = new Medicament
                 {
-                    PharmaceuticalForm = model.Category,
-                    Name = model.Description,
-                    Type = model.Type,
+                    Name = model.Name,
+                    PharmaceuticalForm = model.PharmaceuticalForm,
+                    Availability = model.Availability,
+                    PharmacologicalGroupID = model.PharmacologicalGroupID,
                     UserID = userID
                 };
 
-                _ = _dbContext.Products.Add(newProduct);
+                _ = _dbContext.Medicaments.Add(newProduct);
                 _ = await _dbContext.SaveChangesAsync();
 
                 var newStockProduct = new StockProduct
                 {
-                    ProductID = newProduct.ID,
+                    MedicamentID = newProduct.ID,
                     StockID = 1,
                     DateInput = DateTime.Now,
                     DateOutput = DateTime.MinValue,
@@ -149,7 +143,7 @@ namespace WebApp_Semus.Controllers
                 _ = await _dbContext.SaveChangesAsync();
 
                 TempData["Message"] = "Produto adicionado ao estoque.";
-                return RedirectToAction("Index", new { stockID = 1, type = model.Type });
+                return RedirectToAction("Index", new { stockID = 1 });
             }
 
             return View(model);

@@ -10,8 +10,8 @@ using WebApp_Semus.Data;
 namespace WebApp_Semus.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20200713142553_InitialCreateSchema")]
-    partial class InitialCreateSchema
+    [Migration("20200715194502_updateModelPharmacologicalGroup")]
+    partial class updateModelPharmacologicalGroup
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -221,6 +221,42 @@ namespace WebApp_Semus.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("WebApp_Semus.Entities.Stock.Medicament", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Availability")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(100)")
+                        .HasMaxLength(100);
+
+                    b.Property<string>("PharmaceuticalForm")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(100)")
+                        .HasMaxLength(100);
+
+                    b.Property<int>("PharmacologicalGroupID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserID")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("PharmacologicalGroupID");
+
+                    b.HasIndex("UserID");
+
+                    b.ToTable("Medicaments");
+                });
+
             modelBuilder.Entity("WebApp_Semus.Entities.Stock.Order.StockOrder", b =>
                 {
                     b.Property<int>("ID")
@@ -240,9 +276,6 @@ namespace WebApp_Semus.Migrations
                     b.Property<int>("StockID")
                         .HasColumnType("int");
 
-                    b.Property<byte>("Type")
-                        .HasColumnType("tinyint");
-
                     b.Property<string>("UserID")
                         .HasColumnType("nvarchar(450)");
 
@@ -255,25 +288,48 @@ namespace WebApp_Semus.Migrations
                     b.ToTable("StockOrders");
                 });
 
-            modelBuilder.Entity("WebApp_Semus.Entities.Stock.Product", b =>
+            modelBuilder.Entity("WebApp_Semus.Entities.Stock.PharmacologicalGroup", b =>
                 {
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Category")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(50)")
-                        .HasMaxLength(50);
+                    b.Property<string>("FirstGroupName")
+                        .HasColumnType("nvarchar(100)")
+                        .HasMaxLength(100);
 
-                    b.Property<string>("Description")
+                    b.Property<string>("FirstSubGroup")
+                        .HasColumnType("nvarchar(20)")
+                        .HasMaxLength(20);
+
+                    b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(100)")
                         .HasMaxLength(100);
 
-                    b.Property<byte>("Type")
-                        .HasColumnType("tinyint");
+                    b.Property<string>("SecondGroupName")
+                        .HasColumnType("nvarchar(100)")
+                        .HasMaxLength(100);
+
+                    b.Property<string>("SecondSubGroup")
+                        .HasColumnType("nvarchar(20)")
+                        .HasMaxLength(20);
+
+                    b.Property<string>("Section")
+                        .HasColumnType("nvarchar(2)")
+                        .HasMaxLength(2);
+
+                    b.Property<string>("SectionName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ThirdGroupName")
+                        .HasColumnType("nvarchar(100)")
+                        .HasMaxLength(100);
+
+                    b.Property<string>("ThirdSubGroup")
+                        .HasColumnType("nvarchar(20)")
+                        .HasMaxLength(20);
 
                     b.Property<string>("UserID")
                         .HasColumnType("nvarchar(450)");
@@ -282,12 +338,12 @@ namespace WebApp_Semus.Migrations
 
                     b.HasIndex("UserID");
 
-                    b.ToTable("Products");
+                    b.ToTable("PharmacologicalGroups");
                 });
 
             modelBuilder.Entity("WebApp_Semus.Entities.Stock.ProductOrder", b =>
                 {
-                    b.Property<int>("ProductID")
+                    b.Property<int>("MedicamentID")
                         .HasColumnType("int");
 
                     b.Property<int>("StockOrderID")
@@ -296,7 +352,7 @@ namespace WebApp_Semus.Migrations
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
 
-                    b.HasKey("ProductID", "StockOrderID");
+                    b.HasKey("MedicamentID", "StockOrderID");
 
                     b.HasIndex("StockOrderID");
 
@@ -305,7 +361,7 @@ namespace WebApp_Semus.Migrations
 
             modelBuilder.Entity("WebApp_Semus.Entities.Stock.Purchase.ProductPurchaseOrder", b =>
                 {
-                    b.Property<int>("ProductID")
+                    b.Property<int>("MedicamentID")
                         .HasColumnType("int");
 
                     b.Property<int>("PurchaseOrderID")
@@ -314,7 +370,7 @@ namespace WebApp_Semus.Migrations
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
 
-                    b.HasKey("ProductID", "PurchaseOrderID");
+                    b.HasKey("MedicamentID", "PurchaseOrderID");
 
                     b.HasIndex("PurchaseOrderID");
 
@@ -339,9 +395,6 @@ namespace WebApp_Semus.Migrations
 
                     b.Property<int>("StockID")
                         .HasColumnType("int");
-
-                    b.Property<byte>("Type")
-                        .HasColumnType("tinyint");
 
                     b.Property<string>("UserID")
                         .HasColumnType("nvarchar(450)");
@@ -368,7 +421,7 @@ namespace WebApp_Semus.Migrations
                     b.Property<DateTime>("DateUpdate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Description")
+                    b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(100)")
                         .HasMaxLength(100);
@@ -388,7 +441,7 @@ namespace WebApp_Semus.Migrations
                     b.Property<int>("StockID")
                         .HasColumnType("int");
 
-                    b.Property<int>("ProductID")
+                    b.Property<int>("MedicamentID")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("DateInput")
@@ -412,9 +465,9 @@ namespace WebApp_Semus.Migrations
                     b.Property<string>("UserID")
                         .HasColumnType("nvarchar(450)");
 
-                    b.HasKey("StockID", "ProductID");
+                    b.HasKey("StockID", "MedicamentID");
 
-                    b.HasIndex("ProductID");
+                    b.HasIndex("MedicamentID");
 
                     b.HasIndex("UserID");
 
@@ -472,6 +525,19 @@ namespace WebApp_Semus.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("WebApp_Semus.Entities.Stock.Medicament", b =>
+                {
+                    b.HasOne("WebApp_Semus.Entities.Stock.PharmacologicalGroup", "PharmacologicalGroup")
+                        .WithMany("Medicaments")
+                        .HasForeignKey("PharmacologicalGroupID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "IdentityUser")
+                        .WithMany()
+                        .HasForeignKey("UserID");
+                });
+
             modelBuilder.Entity("WebApp_Semus.Entities.Stock.Order.StockOrder", b =>
                 {
                     b.HasOne("WebApp_Semus.Entities.Stock.Stock", "Stock")
@@ -485,7 +551,7 @@ namespace WebApp_Semus.Migrations
                         .HasForeignKey("UserID");
                 });
 
-            modelBuilder.Entity("WebApp_Semus.Entities.Stock.Product", b =>
+            modelBuilder.Entity("WebApp_Semus.Entities.Stock.PharmacologicalGroup", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "IdentityUser")
                         .WithMany()
@@ -494,9 +560,9 @@ namespace WebApp_Semus.Migrations
 
             modelBuilder.Entity("WebApp_Semus.Entities.Stock.ProductOrder", b =>
                 {
-                    b.HasOne("WebApp_Semus.Entities.Stock.Product", "Product")
+                    b.HasOne("WebApp_Semus.Entities.Stock.Medicament", "Medicament")
                         .WithMany()
-                        .HasForeignKey("ProductID")
+                        .HasForeignKey("MedicamentID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -509,9 +575,9 @@ namespace WebApp_Semus.Migrations
 
             modelBuilder.Entity("WebApp_Semus.Entities.Stock.Purchase.ProductPurchaseOrder", b =>
                 {
-                    b.HasOne("WebApp_Semus.Entities.Stock.Product", "Product")
+                    b.HasOne("WebApp_Semus.Entities.Stock.Medicament", "Medicament")
                         .WithMany()
-                        .HasForeignKey("ProductID")
+                        .HasForeignKey("MedicamentID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -544,9 +610,9 @@ namespace WebApp_Semus.Migrations
 
             modelBuilder.Entity("WebApp_Semus.Entities.Stock.StockProduct", b =>
                 {
-                    b.HasOne("WebApp_Semus.Entities.Stock.Product", "Product")
+                    b.HasOne("WebApp_Semus.Entities.Stock.Medicament", "Medicament")
                         .WithMany("StockProducts")
-                        .HasForeignKey("ProductID")
+                        .HasForeignKey("MedicamentID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

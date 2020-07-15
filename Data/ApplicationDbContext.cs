@@ -14,7 +14,9 @@ namespace WebApp_Semus.Data
         {
         }
 
-        public DbSet<Product> Products { get; set; }
+        public DbSet<Medicament> Medicaments { get; set; }
+        public DbSet<PharmacologicalGroup> PharmacologicalGroups { get; set; }
+
         public DbSet<ProductOrder> ProductOrders { get; set; }
         public DbSet<ProductPurchaseOrder> ProductPurchaseOrders { get; set; }
         public DbSet<PurchaseOrder> PurchaseOrders { get; set; }
@@ -24,7 +26,9 @@ namespace WebApp_Semus.Data
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            _ = builder.ApplyConfiguration(new ProductConfig());
+            _ = builder.ApplyConfiguration(new MedicamentConfig());
+            _ = builder.ApplyConfiguration(new PharmaGroupConfig());
+
             _ = builder.ApplyConfiguration(new StockConfig());
             _ = builder.ApplyConfiguration(new StockProductConfig());
 
