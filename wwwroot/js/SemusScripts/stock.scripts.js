@@ -36,3 +36,24 @@
         $subGroup.insertAdjacentHTML('beforeend', HTML);
     }
 });
+
+$(function () {
+    var lista = document.querySelector("#PharmacologicalGroup");
+
+    $("#Section").click(function () {
+        var section = $("#Section option:selected").val();
+        console.log(section);
+        let url = "/Medicament/DynamicList?description=" + section;
+
+        var xhr = new XMLHttpRequest();
+        xhr.open("GET", url, true);
+
+        xhr.addEventListener("load", () => {
+            if (xhr.status === 200) {
+                lista.innerHTML = xhr.responseText;
+            }
+        });
+
+        setTimeout(() => xhr.send(), 100);
+    });
+});

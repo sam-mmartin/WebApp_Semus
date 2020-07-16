@@ -7,10 +7,19 @@ namespace WebApp_Semus.Components
 {
     public class DynamicList : ViewComponent
     {
-        public IViewComponentResult Invoke(int id)
+        public IViewComponentResult Invoke(string description)
         {
-            return View(new SelectList(
-                new PharmacologicalGroup().ListPharmacologicalGroup(), "Description", "Description"));
+            if (!string.IsNullOrEmpty(description))
+            {
+                var sectionID = new SectionGroup().ListSectionGroup()
+                    .SingleOrDefault(s => s.Description == description).ID;
+                return View(new SelectList(new PharmacologicalGroup().ListPharmacologicalGroup()
+                    .Where(l => l.ID == sectionID), "Description", "Description"));
+            }
+
+            return View(new SelectList(new PharmacologicalGroup().ListPharmacologicalGroup(),
+                                       "Description",
+                                       "Description"));
         }
     }
 }

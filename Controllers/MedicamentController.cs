@@ -165,5 +165,10 @@ namespace WebApp_Semus.Controllers
             return View(model);
         }
         #endregion
+
+        public IActionResult DynamicList(string description)
+        {
+            return ViewComponent("DynamicList", description);
+        }
     }
 }

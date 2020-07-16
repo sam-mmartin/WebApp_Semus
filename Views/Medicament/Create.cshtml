@@ -59,7 +59,7 @@
                     <div class="form-group">
                         <label asp-for="PharmacologicalGroup" class="control-label"></label>
                         <select asp-for="PharmacologicalGroup" class="form-control">
-                            <vc:DynamicList id="1"></vc:DynamicList>
+                            @await Component.InvokeAsync("DynamicList")
                         </select>
                         <span asp-validation-for="PharmacologicalGroup" class="text-danger"></span>
                     </div>
@@ -76,7 +76,7 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-    <script src="~/js/CustomJS/bootstrap-select.min.js"></script>
-    <script src="~/js/SemusScripts/seletcpicker.js"></script>
+    @*<script src="~/js/CustomJS/bootstrap-select.min.js"></script>
+        <script src="~/js/SemusScripts/seletcpicker.js"></script>*@
     <script src="~/js/SemusScripts/stock.scripts.js"></script>
 }
