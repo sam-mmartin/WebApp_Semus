@@ -101,16 +101,13 @@ namespace WebApp_Semus.Controllers
         {
             if (ModelState.IsValid)
             {
-                var userID = _userManager.GetUserId(User);
-                var newStock = new Stock
+                _ = _dbContext.Stocks.Add(new Stock
                 {
                     Name = model.Name,
-                    UserID = userID,
+                    UserID = _userManager.GetUserId(User),
                     DateRegister = DateTime.Now,
                     DateUpdate = DateTime.Now
-                };
-
-                _ = _dbContext.Stocks.Add(newStock);
+                });
                 _ = await _dbContext.SaveChangesAsync();
 
                 TempData["Message"] = "Novo estoque criado com sucesso.";
@@ -143,9 +140,10 @@ namespace WebApp_Semus.Controllers
                     {
                         stockUpdate.DateUpdate = DateTime.Now;
                         stockUpdate.UserID = _userManager.GetUserId(User);
-
                         _ = await _dbContext.SaveChangesAsync();
+
                         TempData["Message"] = "Registro atualizado.";
+                        return RedirectToAction("Details", new { id = model.ID });
                     }
                     catch (DbUpdateException)
                     {
@@ -153,8 +151,6 @@ namespace WebApp_Semus.Controllers
                             "Tente novamente, se o problema persistir, " +
                             "entre em contato com o administrador do sistema.");
                     }
-
-                    return RedirectToAction("Details", new { id = model.ID });
                 }
             }
 

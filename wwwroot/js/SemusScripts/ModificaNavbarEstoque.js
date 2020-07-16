@@ -1,14 +1,8 @@
 ﻿$(function () {
     $('#Medicamentos').click(function () {
         var estoqueID = $('#EstoqueID').html().split('-');
-        var href = "/Product/Index?stockID=" + estoqueID[0] + "&type=1";
+        var href = "/Medicament/Index?stockID=" + estoqueID[0];
         $('#Medicamentos').attr('href', href);
-    });
-
-    $('#Suprimentos').click(function () {
-        var estoqueID = $('#EstoqueID').html().split('-');
-        var href = "/Product/Index?stockID=" + estoqueID[0] + "&type=2";
-        $('#Suprimentos').attr('href', href);
     });
 
     $('#pedidos1').click(function () {

@@ -20,17 +20,38 @@ namespace WebApp_Semus.Data.DataConfig
 
             _ = builder
                 .Property(p => p.Availability)
-                .IsRequired();
+                .IsRequired()
+                .HasMaxLength(150);
+
+            _ = builder
+                .Property(p => p.Section)
+                .IsRequired(false)
+                .HasMaxLength(150);
+
+            _ = builder
+                .Property(p => p.PharmacologicalGroup)
+                .IsRequired(false)
+                .HasMaxLength(150);
+
+            _ = builder
+                .Property(p => p.FirstSubGroup)
+                .IsRequired(false)
+                .HasMaxLength(150);
+
+            _ = builder
+                .Property(p => p.SecondSubGroup)
+                .IsRequired(false)
+                .HasMaxLength(150);
+
+            _ = builder
+                .Property(p => p.ThirdSubGroup)
+                .IsRequired(false)
+                .HasMaxLength(150);
 
             _ = builder
                 .HasOne(s => s.IdentityUser)
                 .WithMany()
                 .HasForeignKey(k => k.UserID);
-
-            _ = builder
-                .HasOne(s => s.PharmacologicalGroup)
-                .WithMany(p => p.Medicaments)
-                .HasForeignKey(k => k.PharmacologicalGroupID);
         }
     }
 }

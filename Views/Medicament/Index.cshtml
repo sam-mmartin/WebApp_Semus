@@ -79,35 +79,40 @@
                     <tbody>
                         @foreach (var item in Model)
                         {
-                            string productInfo = item.MedicamentID + "-" +
-                                            item.TotalQuantity + "-" +
-                                            item.InputQuantity + "-" +
-                                            item.DateInput + "-" +
-                                            item.OutputQuantity;
+                            string productInfo = item.MedicamentID + "_" +
+                                item.Medicament.Availability + "_" +
+                                item.Medicament.Section + "_" +
+                                item.Medicament.PharmacologicalGroup + "_" +
+                                item.Medicament.FirstSubGroup + "_" +
+                                item.Medicament.SecondSubGroup + "_" +
+                                item.Medicament.ThirdSubGroup + "_" +
+                                item.TotalQuantity + "_" +
+                                item.InputQuantity + "_" +
+                                item.DateInput + "_" +
+                                item.OutputQuantity;
 
                             if (item.DateOutput == DateTime.MinValue)
                             {
-                                productInfo += "-Nenhuma Saída";
+                                productInfo += "_Nenhuma Saída";
                             }
                             else
                             {
-                                productInfo += "-" + item.DateOutput;
+                                productInfo += "_" + item.DateOutput;
                             }
 
                             if (item.UserID == null)
                             {
-                                productInfo += "-Não encontrado";
+                                productInfo += "_Não encontrado";
                             }
                             else
                             {
-                                productInfo += "-" + item.IdentityUser.UserName;
+                                productInfo += "_" + item.IdentityUser.UserName;
                             }
 
                             <tr>
                                 <td>@Html.DisplayFor(modelItem => item.MedicamentID)</td>
                                 <td>@Html.DisplayFor(modelItem => item.Medicament.Name)</td>
                                 <td>@Html.DisplayFor(modelItem => item.Medicament.PharmaceuticalForm)</td>
-                                <td>@Html.DisplayFor(modelItem => item.Medicament.Availability)</td>
                                 <td>
                                     <button name="@productInfo"
                                             type="button"

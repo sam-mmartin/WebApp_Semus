@@ -4,16 +4,18 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using WebApp_Semus.Data;
 using WebApp_Semus.Entities.Stock;
 using WebApp_Semus.GlobalMethods;
+using WebApp_Semus.Lists;
 using WebApp_Semus.Models;
 using WebApp_Semus.Models.Stock.Product;
 
 namespace WebApp_Semus.Controllers
 {
-    [Authorize(Policy = "Admin")]
+    //[Authorize(Policy = "Admin")]
     public class MedicamentController : Controller
     {
         #region Var & Constructor
@@ -97,19 +99,24 @@ namespace WebApp_Semus.Controllers
             return View(await PaginatedList<Medicament>.CreateAsync(allProducts, pageNumber ?? 1, pageSize));
         }
 
-        [Authorize(Policy = "SuperAdmin")]
+        //[Authorize(Policy = "SuperAdmin")]
         public IActionResult Create()
         {
+            ViewBag.Section = new SelectList(
+                new SectionGroup().ListSectionGroup(), "Description", "Description");
+            ViewBag.Group = new SelectList(
+                new PharmacologicalGroup().ListPharmacologicalGroup(), "Description", "Description");
             return View();
         }
         #endregion
 
         #region Post Methods
 
-        [Authorize(Policy = "SuperAdmin")]
+        //[Authorize(Policy = "SuperAdmin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(MedicamentViewModel model)
+        //public IActionResult Create(MedicamentViewModel model)
         {
             if (ModelState.IsValid)
             {
@@ -119,9 +126,25 @@ namespace WebApp_Semus.Controllers
                     Name = model.Name,
                     PharmaceuticalForm = model.PharmaceuticalForm,
                     Availability = model.Availability,
-                    PharmacologicalGroupID = model.PharmacologicalGroupID,
+                    Section = model.Section,
+                    PharmacologicalGroup = model.PharmacologicalGroup,
                     UserID = userID
                 };
+
+                if (!string.IsNullOrEmpty(model.FirstSubGroup))
+                {
+                    newProduct.FirstSubGroup = model.FirstSubGroup;
+                }
+
+                if (!string.IsNullOrEmpty(model.SecondSubGroup))
+                {
+                    newProduct.SecondSubGroup = model.SecondSubGroup;
+                }
+
+                if (!string.IsNullOrEmpty(model.ThirdSubGroup))
+                {
+                    newProduct.ThirdSubGroup = model.ThirdSubGroup;
+                }
 
                 _ = _dbContext.Medicaments.Add(newProduct);
                 _ = await _dbContext.SaveChangesAsync();
