@@ -6,6 +6,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Migrations\20200716171705_updateSchema.cs" />
+    <Compile Remove="Migrations\20200716171705_updateSchema.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Include="wwwroot\Images\Backgrounds\health-background.jpg" />
     <None Include="wwwroot\Images\Beagle\avatar2.png" />
     <None Include="wwwroot\Images\Beagle\avatar3.png" />

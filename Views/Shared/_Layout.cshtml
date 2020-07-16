@@ -25,6 +25,9 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Inicio</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-controller="SeedModel" asp-action="SeedingContext">Seed</a>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -46,5 +49,18 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     @RenderSection("Scripts", required: false)
+
+    @if (TempData["Message"] != null)
+    {
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/5.4.0/bootbox.min.js"></script>
+        <script>
+            bootbox.alert({
+                size: "small",
+                title: "Detalhes",
+                message: '@TempData["Message"]',
+                callback: function () { /* your callback code */ }
+            });
+        </script>
+    }
 </body>
 </html>

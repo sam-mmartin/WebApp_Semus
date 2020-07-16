@@ -49,8 +49,8 @@
         <div class="row">
             @foreach (var item in Model)
             {
-                #region var
                 string productInfo = item.MedicamentID + "_" +
+                                item.Medicament.Availability + "_" +
                                 item.Medicament.Section + "_" +
                                 item.Medicament.PharmacologicalGroup + "_" +
                                 item.Medicament.FirstSubGroup + "_" +
@@ -78,24 +78,17 @@
                 {
                     productInfo += "_" + item.IdentityUser.UserName;
                 }
-                #endregion
 
                 <div class="col-md-4">
                     <div class="card-deck mb-3 text-center">
                         <div class="card mb-4 shadow-sm">
                             <div class="card-header">
-                                <h5 class="my-0 font-weight-normal">Código: @item.MedicamentID</h5>
+                                <h6 class="my-0 font-weight-normal">@item.Medicament.Name</h6>
                             </div>
 
                             <div class="card-body">
-                                <h5 class="card-title pricing-card-title">
-                                    <small class="text-muted">Denominação:</small> @item.Medicament.Name
-                                </h5>
                                 <ul class="list-unstyled mt-3 mb-4">
-                                    <li class="font-weight-bold">Forma Farmacêutica</li>
-                                    <li>@item.Medicament.PharmaceuticalForm</li>
-                                    <li class="font-weight-bold">Condição de uso</li>
-                                    <li>@item.Medicament.Availability</li>
+                                    <li>Forma Farmacêutica: @item.Medicament.PharmaceuticalForm</li>
                                 </ul>
                                 <button name="@productInfo"
                                         type="button"

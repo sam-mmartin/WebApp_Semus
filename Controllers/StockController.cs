@@ -30,7 +30,7 @@ namespace WebApp_Semus.Controllers
 
         public async Task<IActionResult> Index()
         {
-            return View(await _dbContext.Stocks.ToListAsync());
+            return View(await _dbContext.Stocks.AsNoTracking().ToListAsync());
         }
 
         public async Task<IActionResult> Details(int? id)
@@ -47,13 +47,13 @@ namespace WebApp_Semus.Controllers
                 .Include(i => i.StockOrders)
                 .Include(i => i.StockProducts)
                 .ThenInclude(t => t.Medicament)
-                .SingleOrDefaultAsync();
+                .AsNoTracking().SingleOrDefaultAsync();
 
             if (stock.ID == 1)
             {
                 ViewBag.Orders = new OrdersBagViewModel()
                 {
-                    CountProduct = await _dbContext.StockOrders.Where(p => p.Invoice == false).CountAsync()
+                    CountProduct = await _dbContext.StockOrders.Where(p => p.Invoice == false).AsNoTracking().CountAsync()
                 };
             }
 

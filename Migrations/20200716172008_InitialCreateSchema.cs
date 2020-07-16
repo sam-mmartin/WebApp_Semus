@@ -153,25 +153,26 @@ namespace WebApp_Semus.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "PharmacologicalGroups",
+                name: "Medicaments",
                 columns: table => new
                 {
                     ID = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     UserID = table.Column<string>(nullable: true),
                     Name = table.Column<string>(maxLength: 100, nullable: false),
-                    FirstSubGroup = table.Column<string>(maxLength: 20, nullable: true),
-                    SecondSubGroup = table.Column<string>(maxLength: 20, nullable: true),
-                    ThirdSubGroup = table.Column<string>(maxLength: 20, nullable: true),
-                    FirstGroupName = table.Column<string>(maxLength: 100, nullable: true),
-                    SecondGroupName = table.Column<string>(maxLength: 100, nullable: true),
-                    ThirdGroupName = table.Column<string>(maxLength: 100, nullable: true)
+                    PharmaceuticalForm = table.Column<string>(maxLength: 100, nullable: false),
+                    Availability = table.Column<string>(maxLength: 150, nullable: false),
+                    Section = table.Column<string>(maxLength: 150, nullable: true),
+                    PharmacologicalGroup = table.Column<string>(maxLength: 150, nullable: true),
+                    FirstSubGroup = table.Column<string>(maxLength: 150, nullable: true),
+                    SecondSubGroup = table.Column<string>(maxLength: 150, nullable: true),
+                    ThirdSubGroup = table.Column<string>(maxLength: 150, nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_PharmacologicalGroups", x => x.ID);
+                    table.PrimaryKey("PK_Medicaments", x => x.ID);
                     table.ForeignKey(
-                        name: "FK_PharmacologicalGroups_AspNetUsers_UserID",
+                        name: "FK_Medicaments_AspNetUsers_UserID",
                         column: x => x.UserID,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
@@ -194,35 +195,6 @@ namespace WebApp_Semus.Migrations
                     table.PrimaryKey("PK_Stocks", x => x.ID);
                     table.ForeignKey(
                         name: "FK_Stocks_AspNetUsers_UserID",
-                        column: x => x.UserID,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Medicaments",
-                columns: table => new
-                {
-                    ID = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    UserID = table.Column<string>(nullable: true),
-                    Name = table.Column<string>(maxLength: 100, nullable: false),
-                    PharmacologicalGroupID = table.Column<int>(nullable: false),
-                    PharmaceuticalForm = table.Column<string>(maxLength: 100, nullable: false),
-                    Availability = table.Column<string>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Medicaments", x => x.ID);
-                    table.ForeignKey(
-                        name: "FK_Medicaments_PharmacologicalGroups_PharmacologicalGroupID",
-                        column: x => x.PharmacologicalGroupID,
-                        principalTable: "PharmacologicalGroups",
-                        principalColumn: "ID",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Medicaments_AspNetUsers_UserID",
                         column: x => x.UserID,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
@@ -414,18 +386,8 @@ namespace WebApp_Semus.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Medicaments_PharmacologicalGroupID",
-                table: "Medicaments",
-                column: "PharmacologicalGroupID");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Medicaments_UserID",
                 table: "Medicaments",
-                column: "UserID");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_PharmacologicalGroups_UserID",
-                table: "PharmacologicalGroups",
                 column: "UserID");
 
             migrationBuilder.CreateIndex(
@@ -514,9 +476,6 @@ namespace WebApp_Semus.Migrations
 
             migrationBuilder.DropTable(
                 name: "Stocks");
-
-            migrationBuilder.DropTable(
-                name: "PharmacologicalGroups");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");

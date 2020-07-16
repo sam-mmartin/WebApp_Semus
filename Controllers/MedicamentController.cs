@@ -31,11 +31,7 @@ namespace WebApp_Semus.Controllers
 
         #region Get Methods
 
-        public async Task<IActionResult> Index(
-            int stockID,
-            string currentFilter,
-            string searchString,
-            int? pageNumber)
+        public async Task<IActionResult> Index(int stockID, string currentFilter, string searchString, int? pageNumber)
         {
             var stock = await _dbContext.Stocks.FindAsync(stockID);
 
@@ -66,14 +62,11 @@ namespace WebApp_Semus.Controllers
             };
 
             ViewData["CurrentFilter"] = searchString;
-            int pageSize = 10;
+            int pageSize = 6;
             return View(await PaginatedList<StockProduct>.CreateAsync(products, pageNumber ?? 1, pageSize));
         }
 
-        public async Task<IActionResult> Details(
-            string currentFilter,
-            string searchString,
-            int? pageNumber)
+        public async Task<IActionResult> Details(string currentFilter, string searchString, int? pageNumber)
         {
             var allProducts = _dbContext.Medicaments
                 .Include(s => s.StockProducts)

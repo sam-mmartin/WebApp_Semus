@@ -45,12 +45,42 @@
 
     <h4 class="text-info">Medicamentos</h4>
 
+    <!-- section -->
     <div class="container">
         <div class="row">
-            @foreach (var item in Model)
-            {
-                #region var
-                string productInfo = item.MedicamentID + "_" +
+            <div class="col-md-12">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th scope="col">Código</th>
+                            <th scope="col">
+                                <a asp-action="Index"
+                                   asp-route-stockID="@ViewBag.Stock.ID"
+                                   asp-route-type="@ViewBag.Type">
+                                    Descrição
+                                </a>
+                                @*<i class="fas fa-angle-double-@desc_down_up text-primary"></i>*@
+                            </th>
+                            <th scope="col">
+                                <a asp-action="Index"
+                                   asp-route-stockID="@ViewBag.Stock.ID"
+                                   asp-route-type="@ViewBag.Type">
+                                    Forma Farmacêutica
+                                </a>
+                                @*<i class="fas fa-angle-double-@categ_down_up text-primary"></i>*@
+                            </th>
+                            <th scope="col"><i class="fas fa-info-circle"></i></th>
+                            @if (ViewBag.Stock.ID == 1)
+                            {
+                                <th scope="col"><i class="fas fa-trash"></i></th>
+                            }
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            string productInfo = item.MedicamentID + "_" +
+                                item.Medicament.Availability + "_" +
                                 item.Medicament.Section + "_" +
                                 item.Medicament.PharmacologicalGroup + "_" +
                                 item.Medicament.FirstSubGroup + "_" +
@@ -61,62 +91,52 @@
                                 item.DateInput + "_" +
                                 item.OutputQuantity;
 
-                if (item.DateOutput == DateTime.MinValue)
-                {
-                    productInfo += "_Nenhuma Saída";
-                }
-                else
-                {
-                    productInfo += "_" + item.DateOutput;
-                }
+                            if (item.DateOutput == DateTime.MinValue)
+                            {
+                                productInfo += "_Nenhuma Saída";
+                            }
+                            else
+                            {
+                                productInfo += "_" + item.DateOutput;
+                            }
 
-                if (item.UserID == null)
-                {
-                    productInfo += "_Não encontrado";
-                }
-                else
-                {
-                    productInfo += "_" + item.IdentityUser.UserName;
-                }
-                #endregion
+                            if (item.UserID == null)
+                            {
+                                productInfo += "_Não encontrado";
+                            }
+                            else
+                            {
+                                productInfo += "_" + item.IdentityUser.UserName;
+                            }
 
-                <div class="col-md-4">
-                    <div class="card-deck mb-3 text-center">
-                        <div class="card mb-4 shadow-sm">
-                            <div class="card-header">
-                                <h5 class="my-0 font-weight-normal">Código: @item.MedicamentID</h5>
-                            </div>
-
-                            <div class="card-body">
-                                <h5 class="card-title pricing-card-title">
-                                    <small class="text-muted">Denominação:</small> @item.Medicament.Name
-                                </h5>
-                                <ul class="list-unstyled mt-3 mb-4">
-                                    <li class="font-weight-bold">Forma Farmacêutica</li>
-                                    <li>@item.Medicament.PharmaceuticalForm</li>
-                                    <li class="font-weight-bold">Condição de uso</li>
-                                    <li>@item.Medicament.Availability</li>
-                                </ul>
-                                <button name="@productInfo"
-                                        type="button"
-                                        class="btn btn-outline-primary detailsPro"
-                                        data-toggle="modal"
-                                        data-target="#ModalCenter">
-                                    Visualizar Detalhes
-                                </button>
+                            <tr>
+                                <td>@Html.DisplayFor(modelItem => item.MedicamentID)</td>
+                                <td>@Html.DisplayFor(modelItem => item.Medicament.Name)</td>
+                                <td>@Html.DisplayFor(modelItem => item.Medicament.PharmaceuticalForm)</td>
+                                <td>
+                                    <button name="@productInfo"
+                                            type="button"
+                                            class="btn btn-outline-primary detailsPro"
+                                            data-toggle="modal"
+                                            data-target="#ModalCenter">
+                                        Visualizar Detalhes
+                                    </button>
+                                </td>
                                 @if (item.StockID == 1)
                                 {
-                                    <a asp-action="Delete"
-                                       asp-route-id="@item.MedicamentID"
-                                       class="btn btn-outline-danger">
-                                        Apagar
-                                    </a>
+                                    <td>
+                                        <a asp-action="Delete"
+                                           asp-route-id="@item.MedicamentID"
+                                           class="btn btn-outline-danger">
+                                            Apagar
+                                        </a>
+                                    </td>
                                 }
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            }
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
         </div>
 
         <!-- Paginação -->
@@ -183,4 +203,3 @@
 @section Scripts {
     <script src="~/js/SemusScripts/detailsModal.js"></script>
 }
-

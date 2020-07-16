@@ -27,7 +27,7 @@
 
             <div class="form-group">
                 <label asp-for="Availability" class="control-label"></label>
-                <input asp-for="Availability" class="form-control" />
+                <textarea asp-for="Availability" class="form-control"></textarea>
                 <span asp-validation-for="Availability" class="text-danger"></span>
             </div>
 
@@ -58,7 +58,9 @@
 
                     <div class="form-group">
                         <label asp-for="PharmacologicalGroup" class="control-label"></label>
-                        <select asp-for="PharmacologicalGroup" asp-items="@ViewBag.Group" class="form-control"></select>
+                        <select asp-for="PharmacologicalGroup" class="form-control">
+                            <vc:DynamicList id="1"></vc:DynamicList>
+                        </select>
                         <span asp-validation-for="PharmacologicalGroup" class="text-danger"></span>
                     </div>
                 </div>
