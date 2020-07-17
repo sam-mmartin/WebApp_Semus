@@ -11,13 +11,13 @@ namespace WebApp_Semus.Components
         {
             if (!string.IsNullOrEmpty(description))
             {
-                var sectionID = new SectionGroup().ListSectionGroup()
+                var sectionID = new SectionGroupList().ListSectionGroup()
                     .SingleOrDefault(s => s.Description == description).ID;
-                return View(new SelectList(new PharmacologicalGroup().ListPharmacologicalGroup()
+                return View(new SelectList(new PharmacologicalGroupList().ListPharmacologicalGroup()
                     .Where(l => l.ID == sectionID), "Description", "Description"));
             }
 
-            return View(new SelectList(new PharmacologicalGroup().ListPharmacologicalGroup(),
+            return View(new SelectList(new PharmacologicalGroupList().ListPharmacologicalGroup(),
                                        "Description",
                                        "Description"));
         }

@@ -12,7 +12,7 @@ using WebApp_Semus.Models.Stock.Product;
 
 namespace WebApp_Semus.Controllers
 {
-    //[Authorize(Policy = "Admin")]
+    [Authorize(Policy = "Admin")]
     public class StockController : Controller
     {
         #region Var & Constructor
@@ -65,13 +65,13 @@ namespace WebApp_Semus.Controllers
             return View(stock);
         }
 
-        //[Authorize(Policy = "SuperAdmin")]
+        [Authorize(Policy = "SuperAdmin")]
         public IActionResult Create()
         {
             return View();
         }
 
-        //[Authorize(Policy = "SuperAdmin")]
+        [Authorize(Policy = "SuperAdmin")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -94,7 +94,7 @@ namespace WebApp_Semus.Controllers
 
         #region Post Methods
 
-        //[Authorize(Policy = "SuperAdmin")]
+        [Authorize(Policy = "SuperAdmin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(StockViewModel model)
@@ -117,7 +117,7 @@ namespace WebApp_Semus.Controllers
             return View(model);
         }
 
-        //[Authorize(Policy = "SuperAdmin")]
+        [Authorize(Policy = "SuperAdmin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(StockViewModel model)

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -96,9 +95,9 @@ namespace WebApp_Semus.Controllers
         public IActionResult Create()
         {
             ViewBag.Section = new SelectList(
-                new SectionGroup().ListSectionGroup(), "Description", "Description");
+                new SectionGroupList().ListSectionGroup(), "Description", "Description");
             ViewBag.Group = new SelectList(
-                new PharmacologicalGroup().ListPharmacologicalGroup(), "Description", "Description");
+                new PharmacologicalGroupList().ListPharmacologicalGroup(), "Description", "Description");
             return View();
         }
         #endregion

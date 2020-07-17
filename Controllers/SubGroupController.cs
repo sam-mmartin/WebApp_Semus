@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;
 using WebApp_Semus.Data;
 using WebApp_Semus.Lists;
-using WebApp_Semus.Models;
 
 namespace WebApp_Semus.Controllers
 {
@@ -26,17 +20,17 @@ namespace WebApp_Semus.Controllers
         {
             if (level == 1)
             {
-                return Json(JsonSerializer.Serialize(new FirstSubGroup().ListFirstSubGroup()));
+                return Json(JsonSerializer.Serialize(new FirstSubGroupList().ListFirstSubGroup()));
             }
 
             if (level == 2)
             {
-                return Json(JsonSerializer.Serialize(new SecondSubGroup().ListSecondSubGroup()));
+                return Json(JsonSerializer.Serialize(new SecondSubGroupList().ListSecondSubGroup()));
             }
 
             if (level == 3)
             {
-                return Json(JsonSerializer.Serialize(new ThirdSubGroup().ListThirdSubGroup()));
+                return Json(JsonSerializer.Serialize(new ThirdSubGroupList().ListThirdSubGroup()));
             }
 
             var result = new { };
