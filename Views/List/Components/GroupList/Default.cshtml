@@ -1,0 +1,17 @@
+﻿@model IEnumerable<string>
+
+<table class="table table-sm">
+    <thead class="thead-dark">
+        <tr>
+            <th scope="col">Descrição</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item</td>
+            </tr>
+        }
+    </tbody>
+</table>

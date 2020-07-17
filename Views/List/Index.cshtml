@@ -1,0 +1,133 @@
+﻿@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/Stock/_LayoutStock.cshtml";
+}
+
+<main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
+    <!-- Header -->
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <h1 class="h2">Listas</h1>
+        <div class="btn-toolbar mb-2 mb-md-0">
+            <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle">
+                <span data-feather="calendar"></span> This week
+            </button>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <!-- Section -->
+            <div class="col-md-6">
+                <div class="card-deck mb-3">
+                    <div class="card mb-4 shadow-sm">
+                        <div class="card-header">
+                            <h4 class="my-0 font-weight-normal d-flex justify-content-between align-items-center">
+                                <span>Seção</span>
+                                <a asp-action="CreateSection"
+                                   class="d-flex align-items-center text-muted"
+                                   aria-label="Add a new report">
+                                    <span data-feather="plus-circle"></span>
+                                </a>
+                            </h4>
+                        </div>
+
+                        <div class="card-body">
+                            @await Component.InvokeAsync("SectionList")
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pharmacological Group -->
+            <div class="col-md-6">
+                <div class="card-deck mb-3">
+                    <div class="card mb-4 shadow-sm">
+                        <div class="card-header">
+                            <h4 class="my-0 font-weight-normal d-flex justify-content-between align-items-center">
+                                <span>Grupo Farmacológico</span>
+                                <a asp-action="CreateGroup"
+                                   class="d-flex align-items-center text-muted"
+                                   aria-label="Add a new report">
+                                    <span data-feather="plus-circle"></span>
+                                </a>
+                            </h4>
+                        </div>
+
+                        <div class="card-body">
+                            @await Component.InvokeAsync("GroupList")
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card-deck mb-3">
+                    <div class="card mb-4 shadow-sm">
+                        <div class="card-header">
+                            <h4 class="my-0 font-weight-normal d-flex justify-content-between align-items-center">
+                                <span>Subgrupo 1</span>
+                                <a asp-action="CreateSubGroup"
+                                   asp-route-id="1"
+                                   class="d-flex align-items-center text-muted"
+                                   aria-label="Add a new report">
+                                    <span data-feather="plus-circle"></span>
+                                </a>
+                            </h4>
+                        </div>
+
+                        <div class="card-body">
+                            @await Component.InvokeAsync("SubGroupList", new { id = 1 })
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="card-deck mb-3">
+                    <div class="card mb-4 shadow-sm">
+                        <div class="card-header">
+                            <h4 class="my-0 font-weight-normal d-flex justify-content-between align-items-center">
+                                <span>Subgrupo 2</span>
+                                <a asp-action="CreateSubGroup"
+                                   asp-route-id="2"
+                                   class="d-flex align-items-center text-muted"
+                                   aria-label="Add a new report">
+                                    <span data-feather="plus-circle"></span>
+                                </a>
+                            </h4>
+                        </div>
+
+                        <div class="card-body">
+                            @await Component.InvokeAsync("SubGroupList", new { id = 2 })
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card-deck mb-3">
+                    <div class="card mb-4 shadow-sm">
+                        <div class="card-header">
+                            <h4 class="my-0 font-weight-normal d-flex justify-content-between align-items-center">
+                                <span>Subgrupo 3</span>
+                                <a asp-action="CreateSubGroup"
+                                   asp-route-id="3"
+                                   class="d-flex align-items-center text-muted"
+                                   aria-label="Add a new report">
+                                    <span data-feather="plus-circle"></span>
+                                </a>
+                            </h4>
+                        </div>
+
+                        <div class="card-body">
+                            @await Component.InvokeAsync("SubGroupList", new { id = 3 })
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
