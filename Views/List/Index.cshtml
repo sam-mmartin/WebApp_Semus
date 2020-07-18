@@ -24,27 +24,50 @@
 
     <div class="container">
         <div class="row">
+            <!-- Sidebar -->
             <div class="col-md-2">
                 <div class="card">
+                    <div class="card-header text-center">
+                        <h5>Adicionar</h5>
+                    </div>
                     <ul class="list-group">
-                        <li class="list-group-item">
-                            <a>Seção <span data-feather="plus-circle"></span></a>
+                        <li class="list-group-item p-0">
+                            <a class="btn btn-light btn-block rounded-0"
+                               asp-action="CreateSection">
+                                Seção
+                            </a>
                         </li>
-                        <li class="list-group-item">
-                            <a>Grupo Farmacológico <span data-feather="plus-circle"></span></a>
+                        <li class="list-group-item p-0">
+                            <a class="btn btn-light btn-block rounded-0"
+                               asp-action="CreateGroup">
+                                Grupo Farmacológico
+                            </a>
                         </li>
-                        <li class="list-group-item">
-                            <a>Subgrupo 1 <span data-feather="plus-circle"></span></a>
+                        <li class="list-group-item p-0">
+                            <a class="btn btn-light btn-block rounded-0"
+                               asp-action="CreateSubgroup"
+                               asp-route-id="1">
+                                Subgrupo 1
+                            </a>
                         </li>
-                        <li class="list-group-item">
-                            <a>Subgrupo 2 <span data-feather="plus-circle"></span></a>
+                        <li class="list-group-item p-0">
+                            <a class="btn btn-light btn-block rounded-0"
+                               asp-action="CreateSubgroup"
+                               asp-route-id="2">
+                                Subgrupo 2
+                            </a>
                         </li>
-                        <li class="list-group-item">
-                            <a>Subgrupo 3 <span data-feather="plus-circle"></span></a>
+                        <li class="list-group-item p-0">
+                            <a class="btn btn-light btn-block rounded-0"
+                               asp-action="CreateSubgroup"
+                               asp-route-id="3">
+                                Subgrupo 3
+                            </a>
                         </li>
                     </ul>
                 </div>
             </div>
+            <!-- Card List -->
             <div class="col-md-8">
                 <!-- Card-Deck -->
                 <div class="card-deck mb-3">

@@ -11,6 +11,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="dbo.PharmacologicalGroups.data.sql" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Include="wwwroot\Images\Backgrounds\health-background.jpg" />
     <None Include="wwwroot\Images\Beagle\avatar2.png" />
     <None Include="wwwroot\Images\Beagle\avatar3.png" />

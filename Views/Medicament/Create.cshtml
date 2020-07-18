@@ -38,11 +38,7 @@
             </div>
 
             <div class="form-group">
-                <button type="button" id="addSubGroup" class="btn btn-outline-success">Adicionar subgrupo</button>
-            </div>
-
-            <div class="form-group">
-                <a asp-action="Index" class="btn btn-secondary">Voltar</a>
+                <a asp-action="Index" asp-route-stockID="1" class="btn btn-secondary">Voltar</a>
                 <input type="submit" value="Salvar" class="btn btn-primary" />
             </div>
         </div>
@@ -67,7 +63,31 @@
             </div>
 
             <div class="row">
-                <div class="col-md-12" id="subGroup"></div>
+                <div class="col-md-12" id="subGroup">
+                    <div class="form-group">
+                        <label asp-for="FirstSubGroup" class="control-label"></label>
+                        <select asp-for="FirstSubGroup" class="form-control">
+                            @await Component.InvokeAsync("SubDynamicList")
+                        </select>
+                        <span asp-validation-for="FirstSubGroup" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="SecondSubGroup" class="control-label"></label>
+                        <select asp-for="SecondSubGroup" class="form-control">
+                            @await Component.InvokeAsync("SubDynamicList")
+                        </select>
+                        <span asp-validation-for="SecondSubGroup" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="ThirdSubGroup" class="control-label"></label>
+                        <select asp-for="ThirdSubGroup" class="form-control">
+                            @await Component.InvokeAsync("SubDynamicList")
+                        </select>
+                        <span asp-validation-for="ThirdSubGroup" class="text-danger"></span>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

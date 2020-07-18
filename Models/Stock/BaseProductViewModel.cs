@@ -8,7 +8,7 @@ namespace WebApp_Semus.Models.Stock
         public int ProductID { get; set; }
 
         // Atributes
-        [Required]
+        [Required(ErrorMessage = "Este campo é obrigatório.")]
         [Display(Name = "Quantidade")]
         public int Quantity { get; set; }
     }

@@ -1,25 +1,30 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using System.Linq;
-using WebApp_Semus.Lists;
+using System.Threading.Tasks;
+using WebApp_Semus.Data;
 
 namespace WebApp_Semus.Components
 {
     public class DynamicList : ViewComponent
     {
-        public IViewComponentResult Invoke(string description)
+        private readonly ApplicationDbContext _dbContext;
+
+        public DynamicList(ApplicationDbContext dbContext)
         {
-            if (!string.IsNullOrEmpty(description))
+            _dbContext = dbContext;
+        }
+
+        public async Task<IViewComponentResult> InvokeAsync(int? id)
+        {
+            if (id == null)
             {
-                var sectionID = new SectionGroupList().ListSectionGroup()
-                    .SingleOrDefault(s => s.Description == description).ID;
-                return View(new SelectList(new PharmacologicalGroupList().ListPharmacologicalGroup()
-                    .Where(l => l.ID == sectionID), "Description", "Description"));
+                return View();
             }
 
-            return View(new SelectList(new PharmacologicalGroupList().ListPharmacologicalGroup(),
-                                       "Description",
-                                       "Description"));
+            return View(new SelectList(await _dbContext.PharmacologicalGroups.Where(p => p.SectionID == id).ToListAsync(),
+                                       "ID", "Description"));
         }
     }
 }

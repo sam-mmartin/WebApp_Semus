@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -8,13 +9,12 @@ using Microsoft.EntityFrameworkCore;
 using WebApp_Semus.Data;
 using WebApp_Semus.Entities.Stock;
 using WebApp_Semus.GlobalMethods;
-using WebApp_Semus.Lists;
 using WebApp_Semus.Models;
 using WebApp_Semus.Models.Stock.Product;
 
 namespace WebApp_Semus.Controllers
 {
-    //[Authorize(Policy = "Admin")]
+    [Authorize(Policy = "Admin")]
     public class MedicamentController : Controller
     {
         #region Var & Constructor
@@ -91,24 +91,27 @@ namespace WebApp_Semus.Controllers
             return View(await PaginatedList<Medicament>.CreateAsync(allProducts, pageNumber ?? 1, pageSize));
         }
 
-        //[Authorize(Policy = "SuperAdmin")]
-        public IActionResult Create()
+        [Authorize(Policy = "SuperAdmin")]
+        public async Task<IActionResult> Create()
         {
             ViewBag.Section = new SelectList(
-                new SectionGroupList().ListSectionGroup(), "Description", "Description");
+                await _dbContext.Sections.ToListAsync(),
+                "ID",
+                "Description");
             ViewBag.Group = new SelectList(
-                new PharmacologicalGroupList().ListPharmacologicalGroup(), "Description", "Description");
+                await _dbContext.PharmacologicalGroups.ToListAsync(),
+                "ID",
+                "Description");
             return View();
         }
         #endregion
 
         #region Post Methods
 
-        //[Authorize(Policy = "SuperAdmin")]
+        [Authorize(Policy = "SuperAdmin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(MedicamentViewModel model)
-        //public IActionResult Create(MedicamentViewModel model)
         {
             if (ModelState.IsValid)
             {
@@ -165,9 +168,17 @@ namespace WebApp_Semus.Controllers
         }
         #endregion
 
-        public IActionResult DynamicList(string description)
+        #region View Components
+        public IActionResult DynamicList(int id)
         {
-            return ViewComponent("DynamicList", description);
+            return ViewComponent("DynamicList", id);
         }
+
+        public IActionResult SubDynamicList(int level, int id)
+        {
+            object paraments = new { level, id };
+            return ViewComponent("SubDynamicList", paraments);
+        }
+        #endregion
     }
 }

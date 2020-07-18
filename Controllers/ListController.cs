@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using WebApp_Semus.Data;
@@ -81,14 +82,21 @@ namespace WebApp_Semus.Controllers
         {
             if (ModelState.IsValid)
             {
-                _ = _dbContext.Sections.Add(new Section
+                try
                 {
-                    Description = model.Description.ToUpper()
-                });
-                _ = await _dbContext.SaveChangesAsync();
+                    _ = _dbContext.Sections.Add(new Section
+                    {
+                        Description = model.Description.ToUpper()
+                    });
+                    _ = await _dbContext.SaveChangesAsync();
 
-                TempData["Message"] = "Seção adicionada.";
-                return RedirectToAction("Index");
+                    TempData["Message"] = "Seção adicionada.";
+                    return RedirectToAction("Index");
+                }
+                catch (Exception ex)
+                {
+                    ModelState.AddModelError(string.Empty, ex.Message);
+                }
             }
 
             return View(model);
@@ -100,15 +108,22 @@ namespace WebApp_Semus.Controllers
         {
             if (ModelState.IsValid)
             {
-                _ = _dbContext.PharmacologicalGroups.Add(new PharmacologicalGroup
+                try
                 {
-                    Description = model.Description.ToUpper(),
-                    SectionID = model.SectionID
-                });
-                _ = await _dbContext.SaveChangesAsync();
+                    _ = _dbContext.PharmacologicalGroups.Add(new PharmacologicalGroup
+                    {
+                        Description = model.Description.ToUpper(),
+                        SectionID = model.SectionID
+                    });
+                    _ = await _dbContext.SaveChangesAsync();
 
-                TempData["Message"] = "Grupo Farmacológico adicionado.";
-                return RedirectToAction("Index");
+                    TempData["Message"] = "Grupo Farmacológico adicionado.";
+                    return RedirectToAction("Index");
+                }
+                catch (Exception ex)
+                {
+                    ModelState.AddModelError(string.Empty, ex.Message);
+                }
             }
 
             return View(model);
@@ -120,36 +135,43 @@ namespace WebApp_Semus.Controllers
         {
             if (ModelState.IsValid)
             {
-                switch (model.GroupID)
+                try
                 {
-                    case 1:
-                        _ = _dbContext.FirstSubGroups.Add(new FirstSubGroup
-                        {
-                            Description = model.Description.ToUpper(),
-                            PharmacologicalGroupID = model.ForeignKey
-                        });
-                        break;
-                    case 2:
-                        _ = _dbContext.SecondSubGroups.Add(new SecondSubGroup
-                        {
-                            Description = model.Description.ToUpper(),
-                            FirstSubGroupID = model.ForeignKey
-                        });
-                        break;
-                    case 3:
-                        _ = _dbContext.ThirdSubGroups.Add(new ThirdSubGroup
-                        {
-                            Description = model.Description.ToUpper(),
-                            SecondSubGroupID = model.ForeignKey
-                        });
-                        break;
-                    default:
-                        return View(model);
-                }
+                    switch (model.GroupID)
+                    {
+                        case 1:
+                            _ = _dbContext.FirstSubGroups.Add(new FirstSubGroup
+                            {
+                                Description = model.Description.ToUpper(),
+                                PharmacologicalGroupID = model.ForeignKey
+                            });
+                            break;
+                        case 2:
+                            _ = _dbContext.SecondSubGroups.Add(new SecondSubGroup
+                            {
+                                Description = model.Description.ToUpper(),
+                                FirstSubGroupID = model.ForeignKey
+                            });
+                            break;
+                        case 3:
+                            _ = _dbContext.ThirdSubGroups.Add(new ThirdSubGroup
+                            {
+                                Description = model.Description.ToUpper(),
+                                SecondSubGroupID = model.ForeignKey
+                            });
+                            break;
+                        default:
+                            return View(model);
+                    }
 
-                _ = await _dbContext.SaveChangesAsync();
-                TempData["Message"] = "Subgrupo adicionado.";
-                return RedirectToAction("Index");
+                    _ = await _dbContext.SaveChangesAsync();
+                    TempData["Message"] = "Subgrupo adicionado.";
+                    return RedirectToAction("Index");
+                }
+                catch (Exception ex)
+                {
+                    ModelState.AddModelError(string.Empty, ex.Message);
+                }
             }
 
             return View(model);
