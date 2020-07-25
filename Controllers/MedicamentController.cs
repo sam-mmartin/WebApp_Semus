@@ -116,6 +116,8 @@ namespace WebApp_Semus.Controllers
             if (ModelState.IsValid)
             {
                 var userID = _userManager.GetUserId(User);
+                //model = await VerifyList.
+
                 var newProduct = new Medicament
                 {
                     Name = model.Name,
