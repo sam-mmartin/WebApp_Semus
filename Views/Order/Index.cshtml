@@ -1,0 +1,81 @@
+﻿@model IEnumerable<WebApp_Semus.Entities.Stock.Order.StockOrder>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/Stock/_LayoutStock.cshtml";
+}
+
+<main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
+    <!-- Header -->
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <h1 class="h2" id="EstoqueID">@ViewBag.Stock.ID - @ViewBag.Stock.Description</h1>
+
+        <div class="btn-toolbar mb-2 mb-md-0">
+            <div class="btn-group mr-2">
+                <a asp-controller="Stock"
+                   asp-action="Details"
+                   asp-route-id="@ViewBag.Stock.ID"
+                   class="btn btn-sm btn-outline-secondary">
+                    &laquo; Voltar
+                </a>
+
+                <a asp-action="Create"
+                   asp-route-stockID="@ViewBag.Stock.ID"
+                   class="btn btn-sm btn-outline-secondary">
+                    Novo Pedido
+                </a>
+            </div>
+
+            <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle">
+                <span data-feather="calendar"></span>
+                This week
+            </button>
+        </div>
+    </div>
+
+    <h4 class="text-info">Pedidos</h4>
+
+    <div class="container">
+        <div class="row">
+            @foreach (var item in Model)
+            {
+                <div class="col-md-4">
+                    <div class="card-deck mb-3 text-center">
+                        <div class="card mb-4 shadow-sm">
+                            <div class="card-header">
+                                <h5 class="my-0 font-weight-normal">Nº do Pedido: @item.ID</h5>
+                            </div>
+
+                            <div class="card-body">
+                                <h5 class="card-title pricing-card-title">
+                                    <small class="text-muted">Entrada:</small> @item.DateInput.ToShortDateString()
+                                </h5>
+                                <ul class="list-unstyled mt-3 mb-4">
+                                    <li class="font-weight-bold">Forma Farmacêutica</li>
+                                    <li></li>
+                                    <li class="font-weight-bold">Condição de uso</li>
+                                    <li></li>
+                                </ul>
+                                <button name="@item.ID"
+                                        type="button"
+                                        class="btn btn-outline-primary detailsPro"
+                                        data-toggle="modal"
+                                        data-target="#ModalCenter">
+                                    Visualizar Detalhes
+                                </button>
+                                @if (item.StockID == 1)
+                                {
+                                    <a asp-action="Delete"
+                                       asp-route-id="@item.ID"
+                                       class="btn btn-outline-danger">
+                                        Apagar
+                                    </a>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</main>

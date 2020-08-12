@@ -5,16 +5,10 @@
         $('#Medicamentos').attr('href', href);
     });
 
-    $('#pedidos1').click(function () {
+    $('#Orders').click(function () {
         var estoqueID = $('#EstoqueID').html().split('-');
-        var href = "/PedidoEstoque/Index?estoqueID=" + estoqueID[0] + "&tipoProduto=1";
-        $('#pedidos1').attr('href', href);
-    });
-
-    $('#pedidos2').click(function () {
-        var estoqueID = $('#EstoqueID').html().split('-');
-        var href = "/PedidoEstoque/Index?estoqueID=" + estoqueID[0] + "&tipoProduto=2";
-        $('#pedidos2').attr('href', href);
+        var href = "/Order/Index?stockID=" + estoqueID[0];
+        $('#Orders').attr('href', href);
     });
 
     $('#novoPedido1').click(function () {

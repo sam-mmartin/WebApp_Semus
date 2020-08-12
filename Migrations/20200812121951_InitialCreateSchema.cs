@@ -47,6 +47,19 @@ namespace WebApp_Semus.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Sections",
+                columns: table => new
+                {
+                    ID = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Description = table.Column<string>(maxLength: 150, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Sections", x => x.ID);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "AspNetRoleClaims",
                 columns: table => new
                 {
@@ -202,6 +215,26 @@ namespace WebApp_Semus.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "PharmacologicalGroups",
+                columns: table => new
+                {
+                    ID = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Description = table.Column<string>(maxLength: 100, nullable: false),
+                    SectionID = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PharmacologicalGroups", x => x.ID);
+                    table.ForeignKey(
+                        name: "FK_PharmacologicalGroups_Sections_SectionID",
+                        column: x => x.SectionID,
+                        principalTable: "Sections",
+                        principalColumn: "ID",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "PurchaseOrders",
                 columns: table => new
                 {
@@ -297,6 +330,26 @@ namespace WebApp_Semus.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "FirstSubGroups",
+                columns: table => new
+                {
+                    ID = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Description = table.Column<string>(maxLength: 150, nullable: false),
+                    PharmacologicalGroupID = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_FirstSubGroups", x => x.ID);
+                    table.ForeignKey(
+                        name: "FK_FirstSubGroups_PharmacologicalGroups_PharmacologicalGroupID",
+                        column: x => x.PharmacologicalGroupID,
+                        principalTable: "PharmacologicalGroups",
+                        principalColumn: "ID",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "ProductPurchaseOrders",
                 columns: table => new
                 {
@@ -346,6 +399,46 @@ namespace WebApp_Semus.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "SecondSubGroups",
+                columns: table => new
+                {
+                    ID = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Description = table.Column<string>(maxLength: 150, nullable: false),
+                    FirstSubGroupID = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_SecondSubGroups", x => x.ID);
+                    table.ForeignKey(
+                        name: "FK_SecondSubGroups_FirstSubGroups_FirstSubGroupID",
+                        column: x => x.FirstSubGroupID,
+                        principalTable: "FirstSubGroups",
+                        principalColumn: "ID",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ThirdSubGroups",
+                columns: table => new
+                {
+                    ID = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Description = table.Column<string>(maxLength: 150, nullable: false),
+                    SecondSubGroupID = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ThirdSubGroups", x => x.ID);
+                    table.ForeignKey(
+                        name: "FK_ThirdSubGroups_SecondSubGroups_SecondSubGroupID",
+                        column: x => x.SecondSubGroupID,
+                        principalTable: "SecondSubGroups",
+                        principalColumn: "ID",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -386,9 +479,19 @@ namespace WebApp_Semus.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
+                name: "IX_FirstSubGroups_PharmacologicalGroupID",
+                table: "FirstSubGroups",
+                column: "PharmacologicalGroupID");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Medicaments_UserID",
                 table: "Medicaments",
                 column: "UserID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PharmacologicalGroups_SectionID",
+                table: "PharmacologicalGroups",
+                column: "SectionID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ProductOrders_StockOrderID",
@@ -409,6 +512,11 @@ namespace WebApp_Semus.Migrations
                 name: "IX_PurchaseOrders_UserID",
                 table: "PurchaseOrders",
                 column: "UserID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_SecondSubGroups_FirstSubGroupID",
+                table: "SecondSubGroups",
+                column: "FirstSubGroupID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_StockOrders_StockID",
@@ -434,6 +542,11 @@ namespace WebApp_Semus.Migrations
                 name: "IX_Stocks_UserID",
                 table: "Stocks",
                 column: "UserID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ThirdSubGroups_SecondSubGroupID",
+                table: "ThirdSubGroups",
+                column: "SecondSubGroupID");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -463,6 +576,9 @@ namespace WebApp_Semus.Migrations
                 name: "StockProducts");
 
             migrationBuilder.DropTable(
+                name: "ThirdSubGroups");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
@@ -475,10 +591,22 @@ namespace WebApp_Semus.Migrations
                 name: "Medicaments");
 
             migrationBuilder.DropTable(
+                name: "SecondSubGroups");
+
+            migrationBuilder.DropTable(
                 name: "Stocks");
 
             migrationBuilder.DropTable(
+                name: "FirstSubGroups");
+
+            migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "PharmacologicalGroups");
+
+            migrationBuilder.DropTable(
+                name: "Sections");
         }
     }
 }

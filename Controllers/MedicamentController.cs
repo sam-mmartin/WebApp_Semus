@@ -116,31 +116,29 @@ namespace WebApp_Semus.Controllers
             if (ModelState.IsValid)
             {
                 var userID = _userManager.GetUserId(User);
-                //model = await VerifyList.
-
                 var newProduct = new Medicament
                 {
                     Name = model.Name,
                     PharmaceuticalForm = model.PharmaceuticalForm,
                     Availability = model.Availability,
-                    Section = model.Section,
-                    PharmacologicalGroup = model.PharmacologicalGroup,
+                    Section = _dbContext.Sections.Find(int.Parse(model.Section)).Description,
+                    PharmacologicalGroup = _dbContext.PharmacologicalGroups.Find(int.Parse(model.PharmacologicalGroup)).Description,
                     UserID = userID
                 };
 
                 if (!string.IsNullOrEmpty(model.FirstSubGroup))
                 {
-                    newProduct.FirstSubGroup = model.FirstSubGroup;
+                    newProduct.FirstSubGroup = _dbContext.FirstSubGroups.Find(int.Parse(model.FirstSubGroup)).Description;
                 }
 
                 if (!string.IsNullOrEmpty(model.SecondSubGroup))
                 {
-                    newProduct.SecondSubGroup = model.SecondSubGroup;
+                    newProduct.SecondSubGroup = _dbContext.SecondSubGroups.Find(int.Parse(model.SecondSubGroup)).Description;
                 }
 
                 if (!string.IsNullOrEmpty(model.ThirdSubGroup))
                 {
-                    newProduct.ThirdSubGroup = model.ThirdSubGroup;
+                    newProduct.ThirdSubGroup = _dbContext.ThirdSubGroups.Find(int.Parse(model.ThirdSubGroup)).Description;
                 }
 
                 _ = _dbContext.Medicaments.Add(newProduct);
